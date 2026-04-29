@@ -32,7 +32,6 @@ function eeiblog_setup() {
 
     // Custom header image (hero banner)
     add_theme_support( 'custom-header', array(
-        'default-image'          => get_template_directory_uri() . '/assets/images/hero-default.jpg',
         'default-text-color'     => 'ffffff',
         'width'                  => 1600,
         'height'                 => 500,
