@@ -1,0 +1,27 @@
+{
+  "_doc": "WordPress tag ID ↔ slug mapping. Same mechanics as categories.json: frontmatter uses slugs; push tooling resolves slug → ID using this file. Tags are flat (no hierarchy).",
+  "tags": [],
+  "planned": [
+    "eei",
+    "essential-elements-interactive",
+    "music-studio",
+    "video-assignments",
+    "soundcheck",
+    "assignments",
+    "resources",
+    "google-classroom",
+    "teacher-feedback",
+    "rhythm",
+    "music-theory",
+    "brass",
+    "strings",
+    "band",
+    "rehearsal",
+    "classroom-management",
+    "beginning-band",
+    "beginning-strings",
+    "summer-practice",
+    "holiday",
+    "webinar"
+  ]
+}

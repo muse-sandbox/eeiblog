@@ -1,0 +1,85 @@
+{
+  "_doc": "WordPress category ID ↔ slug mapping. Updated whenever a category is created or renamed via MCP. Frontmatter in content/*.md files references categories by slug; the push tooling resolves slug → ID using this file.",
+  "categories": [
+    {
+      "id": 1,
+      "name": "Uncategorized",
+      "slug": "uncategorized",
+      "parent": 0,
+      "description": "Default WP category. Avoid using."
+    },
+    {
+      "id": 76611463,
+      "name": "Product Overview",
+      "slug": "product-overview",
+      "parent": 0,
+      "description": "Overview pages for Essential Elements Interactive features and the broader product family."
+    },
+    {
+      "id": 76611464,
+      "name": "Features",
+      "slug": "features",
+      "parent": 0,
+      "description": "Individual EEi feature pages: Music Studio, SoundCheck, Video Assignments, Google Classroom, and others."
+    },
+    {
+      "id": 76611465,
+      "name": "Method Books",
+      "slug": "method-books",
+      "parent": 0,
+      "description": "Essential Elements method book pages — band and strings, books 1–3."
+    },
+    {
+      "id": 76611466,
+      "name": "Account Setup",
+      "slug": "account-setup",
+      "parent": 0,
+      "description": "How to create teacher and student EEi accounts, school codes, invite links, and account migration."
+    },
+    {
+      "id": 76611467,
+      "name": "Tutorials",
+      "slug": "tutorials",
+      "parent": 0,
+      "description": "Step-by-step how-to guides for using EEi: submitting recordings, video assignments, and other workflows."
+    },
+    {
+      "id": 76611468,
+      "name": "Teaching Tips",
+      "slug": "teaching-tips",
+      "parent": 0,
+      "description": "Long-form articles for music educators teaching with Essential Elements: classroom management, rehearsal routines, instrument-specific tips, and pedagogy."
+    },
+    {
+      "id": 76611469,
+      "name": "Webinars",
+      "slug": "webinars",
+      "parent": 0,
+      "description": "On-demand and live webinars for music educators using Essential Elements Interactive."
+    },
+    {
+      "id": 76611470,
+      "name": "News",
+      "slug": "news",
+      "parent": 0,
+      "description": "EEi news, product updates, announcements, and blog posts."
+    },
+    {
+      "id": 76611471,
+      "name": "Lead Generation",
+      "slug": "lead-gen",
+      "parent": 0,
+      "description": "Lead-gen forms and gated content: book preview requests/downloads, code purchase requests. All set to noindex."
+    },
+    {
+      "id": 76611461,
+      "name": "null - null",
+      "slug": "null-null",
+      "parent": 0,
+      "description": "Junk category from migration. To be deleted."
+    }
+  ],
+  "planned": [
+    "archive"
+  ]
+}

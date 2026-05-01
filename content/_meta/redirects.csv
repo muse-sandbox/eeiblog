@@ -1,0 +1,47 @@
+old_path,new_path,status_code,reason,added
+# Format: old_path -> new_path, status_code (301 default), reason, date added (YYYY-MM-DD).
+# Apply via the Redirection plugin (manual install in WP admin).
+# Lines starting with # are comments and ignored.
+#
+# === HUB INDEXES → CATEGORY ARCHIVES ===
+/eei-lessons/,/category/teaching-tips/,301,Hub index replaced by WP category archive,2026-04-30
+/news/,/category/news/,301,Hub replaced by WP category archive (if News category created),2026-04-30
+# /eei-tutorials/ — handled differently: original page trashed, archive post 241 takes over the slug.
+#
+# === LEGACY DUPLICATES ===
+/dr-tim/,/tim/,301,Replaced by 2025 contact form,2026-04-30
+/eei-lessons-old/,/category/teaching-tips/,301,Old Squarespace hub,2026-04-30
+/eei-lessons-2/,/category/teaching-tips/,301,Old Squarespace hub draft,2026-04-30
+/student-account-old/,/create-an-eei-student-account/,301,Old student account page,2026-04-30
+/eei-overview/,/eei-overview-1/,301,Working-copy duplicate,2026-04-30
+/eei-overview-1-1/,/eei-overview-1/,301,Working-copy duplicate (CB),2026-04-30
+/ee-method-books-lp-cb/,/ee-books-overview/,301,Working-copy LP,2026-04-30
+/ee-method-books-lp-cb-copy/,/ee-books-overview/,301,Working-copy LP (Side-By-Side),2026-04-30
+/eei-webinar-starting-band-repeat/,/on-demand-starting-band/,301,Repeat session of same webinar,2026-04-30
+/eei-webinar-starting-band/,/on-demand-starting-band/,301,Live event passed; on-demand is canonical,2026-04-30
+/eei-webinars2/,/eei-webinar-kids-on-track/,301,Old live event landing for same webinar,2026-04-30
+/eei-video-assignments/,/eei-video-assignments-s/,301,Duplicate; -s version is the full one,2026-04-30
+/recordingassignments/,/recording-assignments/,301,Reconcile two similar pages — keep the longer one,2026-04-30
+#
+# === SLUG RENAMES (after trash + new post replaces page) ===
+# All current "-draft" suffix slugs will rename to clean slugs once old page is trashed.
+# This file will be updated with explicit redirects only if slugs change relative to original.
+# Example pattern: post slug `eei-overview-1-draft` → `eei-overview-1` (no redirect, just take over slug).
+#
+# === JUNK PAGES (trash, no redirect needed if no inbound links) ===
+# /spacer/      — placeholder
+# /sbo/         — empty page (EEiBlogSBO)
+# /asta/        — empty page
+# /instrumentalist/ — empty page
+# /new-page-1/  — lorem ipsum placeholder
+# /ee-hybrid-method/ — empty page (Questions?)
+# /eei-lessons-2/ — old draft hub
+#
+# === ARCHIVE PAGES (original page trashed, archive post takes over the slug — no redirect needed) ===
+# /eei-updates/         → archive post 206
+# /eei-tutorials/       → archive post 241 (with 6 YouTube embeds)
+# /ee-books-overview/   → archive post 149
+# /ee-band-method/      → archive post 150
+# /ee-strings-method/   → archive post 151
+# /ee-band-talk/        → archive post 212 (16 podcast episodes pending audio re-embed)
+# /hybrid/              → archive post 242
