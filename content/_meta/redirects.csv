@@ -45,3 +45,18 @@ old_path,new_path,status_code,reason,added
 # /ee-strings-method/   → archive post 151
 # /ee-band-talk/        → archive post 212 (16 podcast episodes pending audio re-embed)
 # /hybrid/              → archive post 242
+# /musiciseessential/   → archive post 328 (in giveaways category)
+#
+# === MIGRATED PAGES (slug taken over by new post — no redirect needed) ===
+# /end-of-year/                  → tutorial post 330
+# /ee-dealer-resource-page/      → product-overview post 332
+# /ee-clinician-resource-page/   → product-overview post 333
+#
+# === ADDITIONAL TRASHED (no redirect — junk or no inbound traffic) ===
+# /spacer/, /sbo/, /asta/, /instrumentalist/, /ee-hybrid-method/, /new-page-1/  — empty placeholders
+# /southwestgiveaway25/  — past giveaway, no redirect
+# /hl-midwest-spree/      — past giveaway, no redirect
+#
+# === ARCHIVED FORM PAGES (trashed, redirected to homepage per Roman) ===
+/feedback/,/,301,Archived feedback page; previously had Squarespace contact form,2026-05-01
+/help-topic-suggestion/,/,301,Archived help-topic suggestion page; previously had Squarespace form,2026-05-01

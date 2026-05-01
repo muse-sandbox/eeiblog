@@ -72,6 +72,20 @@
       "description": "Lead-gen forms and gated content: book preview requests/downloads, code purchase requests. All set to noindex."
     },
     {
+      "id": 76611472,
+      "name": "Archive",
+      "slug": "archive",
+      "parent": 0,
+      "description": "Historical content kept for the record. All posts in this category are noindex and excluded from main navigation."
+    },
+    {
+      "id": 76611473,
+      "name": "Giveaways",
+      "slug": "giveaways",
+      "parent": 0,
+      "description": "Past giveaways and promotional campaigns. Mostly archived (noindex), kept as historical record."
+    },
+    {
       "id": 76611461,
       "name": "null - null",
       "slug": "null-null",

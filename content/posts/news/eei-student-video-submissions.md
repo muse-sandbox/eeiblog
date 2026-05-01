@@ -6,7 +6,7 @@ status: draft
 title: EEi Student Video Submissions
 date: 2026-04-30T21:16:56
 modified: 2026-04-30T21:16:56
-categories: [features, news]
+categories: [archive, features, news]
 tags: []
 featured_media: {wp_id: null, source_url: null}
 excerpt: |
@@ -14,7 +14,7 @@ excerpt: |
 seo:
   jetpack_seo_html_title: "EEi Student Video Submissions: New Feature Announcement | Essential Elements Interactive"
   advanced_seo_description: "Students record audio or video from the EEi Music Studio and submit to teachers for feedback. One of the most requested features from EEi teachers."
-  jetpack_seo_noindex: false
+  jetpack_seo_noindex: true
 source: {origin: squarespace, origin_url: "https://www.eeiblog.com/eei-student-video-submissions", migration_pass: 1}
 notes: |
   AS-IS port from page ID 84. Body source-of-truth in WP post 208. 1 screenshot.

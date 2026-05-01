@@ -2,7 +2,7 @@
 wp_id: 29
 wp_type: page
 slug: help-topic-suggestion
-status: publish
+status: trash
 title: Help Topic Suggestion
 categories: []
 tags: []
@@ -15,7 +15,8 @@ seo:
   jetpack_seo_noindex: false
 source: {origin: squarespace, origin_url: "https://www.eeiblog.com/help-topic-suggestion", migration_pass: 1}
 notes: |
-  STAYS AS PAGE. Squarespace had a form here that didn't migrate. Connect a contact form plugin to capture suggestions.
+  TRASHED 2026-05-01 per Roman — archived. Redirect /help-topic-suggestion/ → / added in redirects.csv.
+  Original Squarespace page had a feedback/suggestion form that didn't migrate.
 ---
 
 <!-- wp:heading {"level":1,"style":{"typography":{"textAlign":"center"}}} -->

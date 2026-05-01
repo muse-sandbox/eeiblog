@@ -2,7 +2,7 @@
 wp_id: 32
 wp_type: page
 slug: feedback
-status: publish
+status: trash
 title: Feedback
 categories: []
 tags: []
@@ -15,7 +15,8 @@ seo:
   jetpack_seo_noindex: false
 source: {origin: squarespace, origin_url: "https://www.eeiblog.com/feedback", migration_pass: 1}
 notes: |
-  STAYS AS PAGE. Squarespace original had Facebook follow widget + feedback form that didn't migrate. Connect a contact form plugin (Contact Form 7, Jetpack Contact, etc.) and add Facebook links from social channels list (eei content rules).
+  TRASHED 2026-05-01 per Roman — archived. Redirect /feedback/ → / added in redirects.csv.
+  Original Squarespace page had Facebook follow widget + feedback form that didn't migrate.
 ---
 
 <!-- wp:heading {"style":{"typography":{"textAlign":"center"}}} -->
