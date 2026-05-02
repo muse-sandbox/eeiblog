@@ -20,6 +20,7 @@ notes: |
   AS-IS port from page ID 82. Body source-of-truth in WP post 212.
   KNOWN GAP: 16 podcast audio embeds (sqs-audio-embed divs) did not migrate from Squarespace. Episode headings preserved as placeholders. Need to: locate the original audio files (likely on a podcast host like Anchor/Spotify/Buzzsprout) and re-embed each episode with the WP audio block or podcast plugin.
   Open follow-ups: rename slug; restore 16 audio embeds.
+  2026-05-02: pre-launch cleanup — swapped EEiBlogHeadLogo for EE_i_WHITE-e1777461642407.webp.
 ---
 
 (see WP post id 212 for body)

@@ -60,3 +60,9 @@ old_path,new_path,status_code,reason,added
 # === ARCHIVED FORM PAGES (trashed, redirected to homepage per Roman) ===
 /feedback/,/,301,Archived feedback page; previously had Squarespace contact form,2026-05-01
 /help-topic-suggestion/,/,301,Archived help-topic suggestion page; previously had Squarespace form,2026-05-01
+#
+# === OLD METHOD HUB PAGES (trash + 301 to category archive — Roman directive 2026-05-02) ===
+# Note: posts.delete is currently DISABLED in MCP — Roman to enable at https://wordpress.com/me/mcp
+# OR manually trash posts 150 and 151 in wp-admin. Once trashed, these redirects activate via Redirection plugin.
+/ee-band-method/,/category/method-books/,301,Old hub post replaced by WP category archive,2026-05-02
+/ee-strings-method/,/category/method-books/,301,Old hub post replaced by WP category archive,2026-05-02

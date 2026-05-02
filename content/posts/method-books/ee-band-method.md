@@ -2,7 +2,7 @@
 wp_id: 150
 wp_type: post
 slug: ee-band-method-draft
-status: draft
+status: trash
 title: EE Band Method
 
 date: 2026-04-30T17:35:46
@@ -42,6 +42,8 @@ notes: |
   - Slug: rename `-draft` → `ee-band-method` after trashing live page (ID 60).
   - "All Essential Elements with EEi Books included access to:" — typo "included" should likely be "include" — preserved AS-IS.
   - `/eei-overview/` link points to the duplicate page (id 102, "EE Overview (New)"). Update to `/eei-overview-1/` or whatever survives the dedup.
+  2026-05-02: pre-launch cleanup — removed EEiBlogHeadLogo figure block entirely (kept H2 + intro paragraph + list).
+  2026-05-02: TRASHED via MCP after Roman enabled posts.delete. Redirect /ee-band-method/ → /category/method-books/ live in redirects.csv.
 ---
 
 <!-- wp:heading {"level":1,"style":{"typography":{"textAlign":"center"}}} -->

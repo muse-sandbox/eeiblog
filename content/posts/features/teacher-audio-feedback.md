@@ -38,6 +38,7 @@ notes: |
   Open follow-ups:
   - Slug: rename `teacher-audio-feedback-draft` → `teacher-audio-feedback` after trashing live page (ID 80).
   - Internal link `/ee-books-overview/` at bottom — currently points to page slug; update if EE Books Overview becomes a post.
+  2026-05-02: pre-launch cleanup — swapped EEiBlogHeadLogo for EE_i_WHITE-e1777461642407.webp.
 ---
 
 <!-- wp:heading {"style":{"typography":{"textAlign":"center"}}} -->

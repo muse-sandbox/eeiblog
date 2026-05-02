@@ -19,6 +19,7 @@ source: {origin: squarespace, origin_url: "https://www.eeiblog.com/fromthepodium
 notes: |
   AS-IS port from page ID 121. Body source-of-truth in WP post 181. By Chase Banks. 2 images.
   Open follow-ups: rename slug.
+  2026-05-02: pre-launch cleanup — added "About the author" footer block with "Chase Banks is the FORMER Education Technology Marketing Manager at Hal Leonard, a former Band Director, and lifelong music educator." (per Roman directive — Banks left the role; bio not present in original Squarespace article). Updated /eei-lessons/ link to /category/teaching-tips/. Banks headshot moved into bio block.
 ---
 
 (see WP post id 181 for body)

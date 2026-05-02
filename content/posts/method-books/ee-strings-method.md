@@ -2,7 +2,7 @@
 wp_id: 151
 wp_type: post
 slug: ee-strings-method-draft
-status: draft
+status: trash
 title: EE Strings Method
 
 date: 2026-04-30T17:36:55
@@ -39,6 +39,8 @@ notes: |
   Open follow-ups:
   - Slug: rename `-draft` → `ee-strings-method` after trashing live page (ID 61).
   - Cross-link `/eei-overview-1/` works (matches our migration target). Keep as-is.
+  2026-05-02: pre-launch cleanup — removed EEiBlogHeadLogo figure block entirely (kept H2 + intro paragraph + list).
+  2026-05-02: TRASHED via MCP after Roman enabled posts.delete. Redirect /ee-strings-method/ → /category/method-books/ live in redirects.csv.
 ---
 
 <!-- wp:heading {"level":1,"style":{"typography":{"textAlign":"center"}}} -->
