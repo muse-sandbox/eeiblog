@@ -216,23 +216,12 @@ function eeiblog_post_thumbnail( $size = 'eeiblog-thumbnail', $echo = true ) {
 /**
  * Posted-on meta line (date + author).
  */
-function eeiblog_posted_meta( $show_category = true ) {
-    $date_html = sprintf(
-        '<time class="entry-date published" datetime="%1$s">%2$s</time>',
-        esc_attr( get_the_date( DATE_W3C ) ),
-        esc_html( get_the_date( 'F j, Y' ) )
-    );
-
-    $author_html = sprintf(
-        '<span class="post-author-name">%s</span>',
-        esc_html( get_the_author() )
-    );
-
+function eeiblog_posted_meta( $show_category = true, $show_date = true, $show_author = true ) {
     $category_html = '';
     if ( $show_category ) {
         $categories = get_the_category();
         if ( $categories ) {
-            $cat         = $categories[0];
+            $cat           = $categories[0];
             $category_html = sprintf(
                 '<span class="post-category"><a href="%s">%s</a></span>',
                 esc_url( get_category_link( $cat->term_id ) ),
@@ -241,10 +230,31 @@ function eeiblog_posted_meta( $show_category = true ) {
         }
     }
 
+    $date_html = '';
+    if ( $show_date ) {
+        $date_html = sprintf(
+            '<span class="post-date-label">%1$s</span> <time class="entry-date published" datetime="%2$s">%3$s</time>',
+            esc_html__( 'Published:', 'eeiblog' ),
+            esc_attr( get_the_date( DATE_W3C ) ),
+            esc_html( get_the_date( 'F j, Y' ) )
+        );
+    }
+
+    $author_html = '';
+    if ( $show_author ) {
+        $author_html = '<span class="post-author-by">' . esc_html__( 'by', 'eeiblog' ) . ' ' .
+            sprintf( '<span class="post-author-name">%s</span>', esc_html( get_the_author() ) ) .
+            '</span>';
+    }
+
+    if ( ! $category_html && ! $date_html && ! $author_html ) {
+        return;
+    }
+
     echo '<div class="post-meta">';
-    if ( $category_html ) echo $category_html;
+    echo $category_html;
     echo $date_html;
-    echo '<span class="post-author-by">' . esc_html__( 'by', 'eeiblog' ) . ' ' . $author_html . '</span>';
+    echo $author_html;
     echo '</div>';
 }
 
@@ -275,9 +285,122 @@ function eeiblog_body_classes( $classes ) {
     if ( is_singular() ) {
         $classes[] = 'singular';
     }
-    if ( is_active_sidebar( 'sidebar-1' ) && ! is_singular( 'page' ) ) {
+    if ( is_single() ) {
+        // Single posts always get the content+sidebar grid (related posts live there).
+        $classes[] = 'has-sidebar';
+    } elseif ( is_active_sidebar( 'sidebar-1' ) && ! is_singular( 'page' ) ) {
         $classes[] = 'has-sidebar';
     }
     return $classes;
 }
 add_filter( 'body_class', 'eeiblog_body_classes' );
+
+/* -------------------------------------------------------
+   Related posts by shared tags. Renders a `.widget` block
+   compatible with the existing sidebar widget styling.
+   Falls back to most-recent same-category posts when the
+   current post has no tags.
+   ------------------------------------------------------- */
+function eeiblog_render_related_posts_widget( $count = 6 ) {
+    if ( ! is_single() ) {
+        return;
+    }
+
+    $post_id = get_the_ID();
+    $tag_ids = wp_get_post_tags( $post_id, array( 'fields' => 'ids' ) );
+
+    // During migration most content is still in `draft`; show drafts/pending to
+    // logged-in users so the related list isn't empty before launch. Anonymous
+    // visitors see only published posts (the default).
+    $statuses = array( 'publish' );
+    if ( is_user_logged_in() ) {
+        $statuses = array( 'publish', 'draft', 'pending', 'private', 'future' );
+    }
+
+    $args = array(
+        'post__not_in'        => array( $post_id ),
+        'posts_per_page'      => $count,
+        'ignore_sticky_posts' => true,
+        'no_found_rows'       => true,
+        'orderby'             => 'date',
+        'order'               => 'DESC',
+        'post_status'         => $statuses,
+    );
+
+    if ( ! empty( $tag_ids ) ) {
+        $args['tag__in'] = $tag_ids;
+    } else {
+        $cat_ids = wp_get_post_categories( $post_id );
+        if ( empty( $cat_ids ) ) {
+            return;
+        }
+        $args['category__in'] = $cat_ids;
+    }
+
+    $related = new WP_Query( $args );
+
+    if ( ! $related->have_posts() ) {
+        wp_reset_postdata();
+        return;
+    }
+
+    echo '<div class="widget widget-related-posts">';
+    echo '<h3 class="widget-title">' . esc_html__( 'Related Posts', 'eeiblog' ) . '</h3>';
+    echo '<ul>';
+    while ( $related->have_posts() ) {
+        $related->the_post();
+        printf(
+            '<li><a href="%s">%s</a></li>',
+            esc_url( get_permalink() ),
+            esc_html( get_the_title() )
+        );
+    }
+    echo '</ul>';
+    echo '</div>';
+
+    wp_reset_postdata();
+}
+
+/* -------------------------------------------------------
+   Jetpack Related Posts: disable auto-injection so we can
+   place the [jetpack-related-posts] shortcode explicitly
+   at the bottom of single.php instead of letting Jetpack
+   append it to the_content automatically (which produces
+   inconsistent placement and risks double-rendering when
+   we call it ourselves).
+   ------------------------------------------------------- */
+add_filter( 'jetpack_relatedposts_filter_enabled_for_request', '__return_false' );
+
+/* -------------------------------------------------------
+   Theme-bundled vanilla-JS lightbox for content images on
+   singular pages. See assets/js/lightbox.js for behavior.
+   Version is pinned to the active theme version so cache
+   busts automatically on each release.
+   ------------------------------------------------------- */
+function eeiblog_enqueue_lightbox() {
+    if ( ! is_singular() ) {
+        return;
+    }
+    wp_enqueue_script(
+        'eeiblog-lightbox',
+        get_theme_file_uri( 'assets/js/lightbox.js' ),
+        array(),
+        wp_get_theme()->get( 'Version' ),
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'eeiblog_enqueue_lightbox' );
+
+/* -------------------------------------------------------
+   Suppress WordPress.com default "by Author" byline on
+   single posts. Our theme handles meta via
+   eeiblog_posted_meta() in single.php.
+   ------------------------------------------------------- */
+add_filter( 'the_content', function( $content ) {
+    if ( ! is_single() ) {
+        return $content;
+    }
+    return preg_replace( '/<p[^>]*class="[^"]*post-author[^"]*"[^>]*>.*?<\/p>/is', '', $content );
+}, 99 );
+
+add_filter( 'author_link', '__return_empty_string', 99 );

@@ -4,7 +4,7 @@ Theme URI: https://eeiblog.com
 Author: MuseGroup
 Author URI: https://eeiblog.com
 Description: A clean WordPress theme matching the EEi Blog design — dark header, white content area, list-style blog posts.
-Version: 1.0.3
+Version: 1.0.11
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: eeiblog
@@ -450,6 +450,11 @@ li { margin-bottom: 0.35em; }
 
 .post-meta .post-category a:hover { background: var(--color-accent-hover); text-decoration: none; }
 
+.post-meta .post-date-label {
+    color: var(--color-text-muted);
+    margin-right: 0.25rem;
+}
+
 .post-title {
     font-size: 1.375rem;
     font-weight: 700;
@@ -534,12 +539,32 @@ li { margin-bottom: 0.35em; }
     margin-bottom: 16px;
 }
 
-.single-post-header .post-author {
-    font-size: 0.9rem;
+.single-post-footer {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border, #e5e5e5);
+}
+
+.single-post-footer .post-meta {
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
 }
 
-.single-post-header .post-author a { color: var(--color-accent); }
+/* Jetpack related-posts block at the bottom of single posts */
+.post-related-jetpack {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+}
+
+.post-related-jetpack .jp-relatedposts-headline {
+    font-size: 0.875rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-header-bg);
+    margin-bottom: 16px;
+}
 
 .post-featured-image {
     border-radius: 8px;
@@ -571,7 +596,6 @@ li { margin-bottom: 0.35em; }
     border-radius: 6px;
     margin: 1.5em auto;
     display: block;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
 }
 
 .post-content-body ul, .post-content-body ol { margin: 0 0 1.4em 1.5em; }
@@ -794,6 +818,291 @@ li { margin-bottom: 0.35em; }
 }
 
 .footer-links a:hover { color: #ffffff; text-decoration: none; }
+
+/* =========================================================
+   Block: Separator (<hr>)
+   WP core constrains the default-style separator to
+   max-width: 100px via `.wp-block-separator:not(.is-style-wide):not(.is-style-dots)`
+   (specificity 0,3,0). We need at least 0,3,1 to override.
+   ========================================================= */
+.entry-content hr.wp-block-separator:not(.is-style-dots),
+.post-content-body hr.wp-block-separator:not(.is-style-dots) {
+    border: 0;
+    border-top: 1px solid var(--color-border);
+    width: 100%;
+    max-width: 100%;
+    margin: 3rem auto;
+    opacity: 1;
+}
+
+.entry-content hr.wp-block-separator.is-style-dots,
+.post-content-body hr.wp-block-separator.is-style-dots {
+    border: 0;
+    background: none;
+    text-align: center;
+    line-height: 1;
+    height: auto;
+    margin: 3rem auto;
+}
+
+.entry-content hr.wp-block-separator.is-style-dots::before,
+.post-content-body hr.wp-block-separator.is-style-dots::before {
+    content: "···";
+    font-size: 1.5rem;
+    letter-spacing: 1rem;
+    color: var(--color-text-muted);
+}
+
+/* =========================================================
+   Block: Buttons (CTA)
+   ========================================================= */
+.wp-block-button {
+    margin: 1rem 0;
+}
+
+.wp-block-buttons {
+    margin: 2rem 0;
+}
+
+.wp-block-button__link.wp-element-button,
+.wp-block-button__link {
+    background-color: var(--color-header-bg);
+    color: #ffffff;
+    border-radius: 0;
+    padding: 1rem 2.25rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    line-height: 1.2;
+    transition: background-color 0.15s ease;
+}
+
+.wp-block-button__link.wp-element-button:hover,
+.wp-block-button__link:hover {
+    background-color: var(--color-accent);
+    color: #ffffff;
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link {
+    background-color: transparent;
+    color: var(--color-header-bg);
+    border: 2px solid var(--color-header-bg);
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link:hover {
+    background-color: var(--color-header-bg);
+    color: #ffffff;
+}
+
+/* =========================================================
+   Block: Gallery
+   Force grid layout based on .columns-N — core's is-layout-flex
+   needs theme.json registration which this classic theme doesn't ship.
+   ========================================================= */
+.entry-content .wp-block-gallery,
+.post-content-body .wp-block-gallery {
+    margin: 2rem 0;
+    padding: 0;
+    list-style: none;
+}
+
+.entry-content .wp-block-gallery.has-nested-images,
+.post-content-body .wp-block-gallery.has-nested-images {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(var(--gallery-columns, 3), 1fr);
+}
+
+.entry-content .wp-block-gallery.columns-2,
+.post-content-body .wp-block-gallery.columns-2 { --gallery-columns: 2; }
+
+.entry-content .wp-block-gallery.columns-3,
+.post-content-body .wp-block-gallery.columns-3 { --gallery-columns: 3; }
+
+.entry-content .wp-block-gallery.columns-4,
+.post-content-body .wp-block-gallery.columns-4 { --gallery-columns: 4; }
+
+.entry-content .wp-block-gallery.columns-5,
+.post-content-body .wp-block-gallery.columns-5 { --gallery-columns: 5; }
+
+.entry-content .wp-block-gallery.columns-6,
+.post-content-body .wp-block-gallery.columns-6 { --gallery-columns: 6; }
+
+/* Override WP block-library widths intended for flex layout — we use grid,
+   so figure should size to its cell. The :not(#individual-image) selector
+   matches WP core's specificity tier so this rule wins via source order. */
+.entry-content .wp-block-gallery.has-nested-images figure.wp-block-image:not(#individual-image),
+.post-content-body .wp-block-gallery.has-nested-images figure.wp-block-image:not(#individual-image) {
+    width: auto;
+}
+
+.entry-content .wp-block-gallery .wp-block-image,
+.post-content-body .wp-block-gallery .wp-block-image {
+    margin: 0;
+    overflow: hidden;
+    border-radius: 6px;
+    transition: transform 0.18s ease;
+    aspect-ratio: 16 / 10;
+}
+
+.entry-content .wp-block-gallery .wp-block-image:hover,
+.post-content-body .wp-block-gallery .wp-block-image:hover {
+    transform: translateY(-2px);
+}
+
+.entry-content .wp-block-gallery .wp-block-image img,
+.post-content-body .wp-block-gallery .wp-block-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (max-width: 900px) {
+    .entry-content .wp-block-gallery.has-nested-images,
+    .post-content-body .wp-block-gallery.has-nested-images {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 540px) {
+    .entry-content .wp-block-gallery.has-nested-images,
+    .post-content-body .wp-block-gallery.has-nested-images {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================
+   Lightbox (vanilla JS — see assets/js/lightbox.js)
+   ========================================================= */
+.eei-lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.eei-lightbox.is-open {
+    display: flex;
+    animation: eei-lightbox-fade 0.18s ease;
+}
+
+@keyframes eei-lightbox-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.eei-lightbox__figure {
+    margin: 0;
+    max-width: 95vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.eei-lightbox__img {
+    max-width: 100%;
+    max-height: 85vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    background: #1a1a1a;
+}
+
+.eei-lightbox__caption {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+    text-align: center;
+    max-width: 80vw;
+    line-height: 1.4;
+}
+
+.eei-lightbox__close,
+.eei-lightbox__prev,
+.eei-lightbox__next {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: background 0.15s ease, transform 0.15s ease;
+    font-family: -apple-system, system-ui, sans-serif;
+}
+
+.eei-lightbox__close:hover,
+.eei-lightbox__prev:hover,
+.eei-lightbox__next:hover {
+    background: rgba(0, 0, 0, 0.85);
+    transform: scale(1.05);
+}
+
+.eei-lightbox__close {
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.75rem;
+}
+
+.eei-lightbox__prev,
+.eei-lightbox__next {
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2.25rem;
+}
+
+.eei-lightbox__prev:hover,
+.eei-lightbox__next:hover {
+    transform: translateY(-50%) scale(1.05);
+}
+
+.eei-lightbox__prev { left: 1.5rem; }
+.eei-lightbox__next { right: 1.5rem; }
+
+.eei-lightbox__counter {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.85rem;
+    background: rgba(0, 0, 0, 0.55);
+    padding: 0.4rem 0.85rem;
+    border-radius: 1rem;
+    letter-spacing: 0.05em;
+}
+
+@media (max-width: 600px) {
+    .eei-lightbox { padding: 1rem; }
+    .eei-lightbox__close,
+    .eei-lightbox__prev,
+    .eei-lightbox__next {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    .eei-lightbox__close {
+        top: 0.75rem;
+        right: 0.75rem;
+        font-size: 1.4rem;
+    }
+    .eei-lightbox__prev { left: 0.5rem; font-size: 1.85rem; }
+    .eei-lightbox__next { right: 0.5rem; font-size: 1.85rem; }
+}
 
 /* =========================================================
    Responsive

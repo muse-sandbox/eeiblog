@@ -7,7 +7,7 @@ get_header();
 
     <main id="main" class="site-main">
         <div class="container">
-            <div class="<?php echo is_active_sidebar( 'sidebar-1' ) ? 'content-sidebar-wrap' : ''; ?>">
+            <div class="content-sidebar-wrap">
 
                 <div class="content-area">
                     <?php while ( have_posts() ) : the_post(); ?>
@@ -16,19 +16,9 @@ get_header();
 
                             <!-- Post Header -->
                             <header class="single-post-header">
-                                <?php eeiblog_posted_meta(); ?>
+                                <?php eeiblog_posted_meta( true, false, false ); ?>
 
                                 <h1 class="post-title entry-title"><?php the_title(); ?></h1>
-
-                                <p class="post-author">
-                                    <?php
-                                    printf(
-                                        /* translators: %s: author name */
-                                        esc_html__( 'By %s', 'eeiblog' ),
-                                        '<a href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author() ) . '</a>'
-                                    );
-                                    ?>
-                                </p>
                             </header>
 
                             <!-- Featured Image -->
@@ -56,6 +46,18 @@ get_header();
                                 ) );
                                 ?>
                             </div><!-- .post-content-body -->
+
+                            <!-- Published date (moved below the body) -->
+                            <footer class="single-post-footer">
+                                <?php eeiblog_posted_meta( false, true, false ); ?>
+                            </footer>
+
+                            <!-- Jetpack Related Posts (rendered explicitly; auto-inject is disabled in functions.php) -->
+                            <?php if ( shortcode_exists( 'jetpack-related-posts' ) ) : ?>
+                                <div class="post-related-jetpack">
+                                    <?php echo do_shortcode( '[jetpack-related-posts]' ); ?>
+                                </div>
+                            <?php endif; ?>
 
                             <!-- Tags -->
                             <?php
@@ -110,9 +112,12 @@ get_header();
                     <?php endwhile; ?>
                 </div><!-- .content-area -->
 
-                <?php if ( is_active_sidebar( 'sidebar-1' ) ) : ?>
-                    <?php get_sidebar(); ?>
-                <?php endif; ?>
+                <aside id="secondary" class="widget-area" role="complementary" aria-label="<?php esc_attr_e( 'Related Posts', 'eeiblog' ); ?>">
+                    <?php eeiblog_render_related_posts_widget(); ?>
+                    <?php if ( is_active_sidebar( 'sidebar-1' ) ) : ?>
+                        <?php dynamic_sidebar( 'sidebar-1' ); ?>
+                    <?php endif; ?>
+                </aside>
 
             </div>
         </div>
