@@ -6,7 +6,7 @@ status: draft
 title: School EEi Account ID & School Code
 date: 2026-04-30T18:51:32
 modified: 2026-04-30T18:51:32
-categories: [account-setup]
+categories: [archive, account-setup]
 tags: []
 featured_media: {wp_id: null, source_url: null}
 excerpt: |

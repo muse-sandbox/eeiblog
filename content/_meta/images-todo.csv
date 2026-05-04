@@ -1,6 +1,6 @@
 filename,squarespace_url,used_in_post,wp_media_id,status,notes
 # Tracks Squarespace CDN images that should eventually be re-uploaded to the WP media library.
-# Status: pending (not yet downloaded) | downloaded (in /Development/eeiblog.com/assets/) | uploaded (in WP media)
+# Status: pending (not yet downloaded) | downloaded (in /Development/eeiblog.com/assets/images/) | uploaded (in WP media)
 # Lines starting with # are comments and ignored.
 EEI_Banner_June2025.png,https://images.squarespace-cdn.com/content/v1/5b928a1e75f9ee72cbaf8c6f/0d0001b5-29ab-4c7c-b3d1-9178f8a065eb/EEI_Banner_June2025.png,eei-overview-1,,downloaded,Hero banner. Already exists locally as /Development/eeiblog.com/EEI_Banner_June2025.webp.
 EE2025_800x800.jpg,https://images.squarespace-cdn.com/content/v1/5b928a1e75f9ee72cbaf8c6f/84d5eee1-03be-47c3-b1d4-8551c351de7e/EE2025_800x800.jpg,eei-overview-1,,downloaded,Method book covers card.

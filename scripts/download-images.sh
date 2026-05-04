@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Download images from images-todo.csv into the local /assets/ tree.
+# Download images from images-todo.csv into the local /assets/images/ tree.
 #
 # Run from the repo root:
 #   bash scripts/download-images.sh
@@ -12,7 +12,7 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 CSV="$REPO_ROOT/content/_meta/images-todo.csv"
-ASSETS_ROOT="$REPO_ROOT/assets"
+IMAGES_ROOT="$REPO_ROOT/assets/images"
 TMP_CSV="$(mktemp)"
 
 if [ ! -f "$CSV" ]; then
@@ -20,7 +20,7 @@ if [ ! -f "$CSV" ]; then
   exit 1
 fi
 
-mkdir -p "$ASSETS_ROOT"
+mkdir -p "$IMAGES_ROOT"
 
 downloaded_count=0
 skipped_count=0
@@ -42,7 +42,7 @@ tail -n +2 "$CSV" | while IFS= read -r line; do
   # except `notes`, which is the LAST column. So we split at most 5 times.
   IFS=',' read -r filename url used_in_post wp_media_id status notes <<< "$line"
 
-  target_dir="$ASSETS_ROOT/$used_in_post"
+  target_dir="$IMAGES_ROOT/$used_in_post"
   target_file="$target_dir/$filename"
 
   if [ "$status" = "downloaded" ] && [ -f "$target_file" ]; then

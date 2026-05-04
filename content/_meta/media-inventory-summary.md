@@ -15,7 +15,7 @@ Generated for 75 posts/pages
 
 ## 2. Images already uploaded
 
-Matched against `assets/optimized-manifest.csv` (28 matches found across 10 post slugs)
+Matched against `assets/assets/images/optimized-manifest.csv` (28 matches found across 10 post slugs)
 
 *These images are already in WP media library — no action needed.*
 

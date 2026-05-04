@@ -6,7 +6,7 @@ status: draft
 title: EEi School Code
 date: 2026-04-30T18:50:14
 modified: 2026-04-30T18:50:14
-categories: [account-setup]
+categories: [archive, account-setup]
 tags: []
 featured_media: {wp_id: null, source_url: null}
 excerpt: |

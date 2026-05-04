@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Optimize images in /assets/ for WordPress upload:
+# Optimize images in /assets/images/ for WordPress upload:
 #   1. Convert PNG/JPG -> WebP (quality 82)
 #   2. Sanitize filenames (lowercase, '+'/space -> '-', strip duplicate dashes)
-#   3. Output to assets/optimized/ as a flat directory ready to drag into WP Media
+#   3. Output to assets/images/optimized/ as a flat directory ready to drag into WP Media
 #   4. Write a manifest mapping <post-slug>/<orig-name> -> <new-name>.webp
 #
 # Run from repo root:
@@ -14,9 +14,9 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-ASSETS_ROOT="$REPO_ROOT/assets"
-OUT_DIR="$ASSETS_ROOT/optimized"
-MANIFEST="$ASSETS_ROOT/optimized-manifest.csv"
+IMAGES_ROOT="$REPO_ROOT/assets/images"
+OUT_DIR="$IMAGES_ROOT/optimized"
+MANIFEST="$IMAGES_ROOT/optimized-manifest.csv"
 QUALITY=82
 
 if ! command -v cwebp >/dev/null 2>&1; then
@@ -46,7 +46,7 @@ failed=0
 total_orig=0
 total_new=0
 
-# Walk every jpg/png under assets/, excluding our own output dir
+# Walk every jpg/png under assets/images/, excluding our own output dir
 while IFS= read -r src; do
   rel="${src#$ASSETS_ROOT/}"          # e.g. eebandbook1/EE+Band+1.png
   post_slug="${rel%%/*}"              # eebandbook1
@@ -81,7 +81,7 @@ while IFS= read -r src; do
     echo "[fail] $rel" >&2
     failed=$((failed + 1))
   fi
-done < <(find "$ASSETS_ROOT" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -not -path "$OUT_DIR/*")
+done < <(find "$IMAGES_ROOT" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -not -path "$OUT_DIR/*")
 
 echo ""
 echo "Done."

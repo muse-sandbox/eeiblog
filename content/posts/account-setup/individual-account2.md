@@ -6,7 +6,7 @@ status: draft
 title: Individual Account
 date: 2026-04-30T18:49:21
 modified: 2026-04-30T18:49:21
-categories: [account-setup]
+categories: [archive, account-setup]
 tags: []
 featured_media: {wp_id: null, source_url: null}
 excerpt: |

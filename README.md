@@ -101,5 +101,5 @@ wordpress-theme/eeiblog-theme/
 ├── searchform.php
 ├── index.php          # fallback template
 ├── screenshot.png
-└── assets/js/navigation.js  # mobile menu + accessible dropdowns
+└── assets/assets/images/js/navigation.js  # mobile menu + accessible dropdowns
 ```

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
 Download images listed in content/_meta/media-inventory.csv into the
-local /assets/<post_slug>/<basename>/ tree, ready for optimize-assets.sh.
+local /assets/images/<post_slug>/<basename>/ tree, ready for optimize-assets.sh.
 
 Idempotent:
-  - Skips if assets/<post_slug>/<basename> is already on disk
-  - Skips if assets/optimized/<suggested_filename> already exists
+  - Skips if images/<post_slug>/<basename> is already on disk
+  - Skips if assets/images/optimized/<suggested_filename> already exists
     (image was already converted in a previous run)
 
 Run from repo root:
@@ -43,7 +43,7 @@ def url_basename(url: str) -> str:
 
 
 def asset_folder(post_slug: str) -> str:
-    """Map a CSV post_slug to its assets/ folder name.
+    """Map a CSV post_slug to its images/ folder name.
 
     The inventory uses `<slug>-draft` for in-progress posts, but the
     `suggested_filename` column drops the `-draft` suffix so optimized

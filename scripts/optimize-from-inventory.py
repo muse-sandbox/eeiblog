@@ -7,8 +7,8 @@ Output names come straight from the CSV's `suggested_filename` column
 filename sanitization rule lives in the inventory, not in this script.
 
 For each image row:
-  source = assets/<asset_folder(post_slug)>/<url_basename(source_url)>
-  output = assets/optimized/<suggested_filename>
+  source = images/<asset_folder(post_slug)>/<url_basename(source_url)>
+  output = assets/images/optimized/<suggested_filename>
 
 Idempotent: skips when the output webp is at least as new as its source.
 
@@ -66,7 +66,7 @@ def main() -> int:
     ap.add_argument(
         "--prune",
         action="store_true",
-        help="remove .webp files in assets/optimized/ that aren't referenced in the CSV",
+        help="remove .webp files in assets/images/optimized/ that aren't referenced in the CSV",
     )
     ap.add_argument("--csv", default=str(CSV_PATH))
     args = ap.parse_args()

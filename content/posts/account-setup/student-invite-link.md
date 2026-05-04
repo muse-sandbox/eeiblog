@@ -6,7 +6,7 @@ status: draft
 title: EEi Student Invite Link
 date: 2026-04-30T18:54:16
 modified: 2026-04-30T18:54:16
-categories: [account-setup]
+categories: [archive, account-setup]
 tags: []
 featured_media: {wp_id: null, source_url: null}
 excerpt: |

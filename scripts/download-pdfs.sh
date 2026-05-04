@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Download PDFs we still need to host on WP and place them in assets/pdfs/.
+# Download PDFs we still need to host on WP and place them in pdfs/.
 # Roman uploads them to WP Media Library afterwards (drag-drop in wp-admin),
 # then runs the URL replacement to update post content with WP URLs.
 #

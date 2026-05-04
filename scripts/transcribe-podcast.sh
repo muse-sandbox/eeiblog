@@ -10,7 +10,7 @@
 #   - whisper-cpp (default, local, free, requires whisper-cpp via homebrew)
 #   - openai (cloud, ~$0.006/min, requires OPENAI_API_KEY env var)
 #
-# Output: media/podcasts/ee-band-talk/transcripts/ee-band-talk-<id>.md
+# Output: podcasts/ee-band-talk/transcripts/ee-band-talk-<id>.md
 #         (markdown with frontmatter; tracked in git)
 
 set -euo pipefail
@@ -18,7 +18,7 @@ set -euo pipefail
 # Resolve repo root
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-PODCAST_DIR="$REPO_ROOT/media/podcasts/ee-band-talk"
+PODCAST_DIR="$REPO_ROOT/assets/podcasts/ee-band-talk"
 AUDIO_DIR="$PODCAST_DIR/audio"
 TRANSCRIPT_DIR="$PODCAST_DIR/transcripts"
 EPISODES_JSON="$PODCAST_DIR/episodes.json"
@@ -104,7 +104,7 @@ case "$BACKEND" in
       [[ -n "$brew_prefix"     ]] && candidate_dirs+=("$brew_prefix/share/whisper-cpp")
     fi
     candidate_dirs+=(
-      "$REPO_ROOT/media/whisper-models"
+      "$REPO_ROOT/assets/podcasts/whisper-models"
       "/opt/homebrew/share/whisper-cpp"
       "/usr/local/share/whisper-cpp"
       "$HOME/.local/share/whisper-cpp"

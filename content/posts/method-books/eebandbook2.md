@@ -6,7 +6,7 @@ status: draft
 title: Essential Elements Band Book Two
 date: 2026-04-30T17:41:41
 modified: 2026-04-30T17:41:41
-categories: [method-books]
+categories: [archive, method-books]
 tags: []
 featured_media: {wp_id: null, source_url: null}
 excerpt: |
