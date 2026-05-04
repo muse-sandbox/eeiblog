@@ -76,7 +76,7 @@ Edit `.md` in `content/`, push to WordPress as a draft via the MCP workflow, rev
 
 ## Installing the theme
 
-1. Grab the latest pre-built archive from `wordpress-theme/eeiblog-theme-<version>.zip` (currently `1.0.12`). To rebuild from source: `cd wordpress-theme/eeiblog-theme && zip -r ../eeiblog-theme-<version>.zip . -x '*.DS_Store'`.
+1. Grab the latest pre-built archive from `wordpress-theme/eeiblog-theme-<version>.zip` (currently `1.0.18`). To rebuild from source: `cd wordpress-theme && zip -r eeiblog-theme-<version>.zip eeiblog-theme/ -x '*.DS_Store' '*/CLAUDE-CODE-TASKS.md'`. **The zip must contain a top-level `eeiblog-theme/` folder** — otherwise WP unzips into a directory named after the zip filename (`eeiblog-theme-1.0.18/`) and every release becomes a new theme instead of an update.
 2. In WordPress admin: **Appearance → Themes → Add New → Upload Theme**
 3. Upload the zip, activate.
 4. Configure menus (**Appearance → Menus**): create *Primary* and *Footer* menus.
