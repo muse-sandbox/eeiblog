@@ -66,3 +66,6 @@ old_path,new_path,status_code,reason,added
 # OR manually trash posts 150 and 151 in wp-admin. Once trashed, these redirects activate via Redirection plugin.
 /ee-band-method/,/category/method-books/,301,Old hub post replaced by WP category archive,2026-05-02
 /ee-strings-method/,/category/method-books/,301,Old hub post replaced by WP category archive,2026-05-02
+#
+# === SLUG TYPO FIXES ===
+/brass-mouhtpiece/,/brass-mouthpiece/,301,Fix typo in original Squarespace slug,2026-05-04
