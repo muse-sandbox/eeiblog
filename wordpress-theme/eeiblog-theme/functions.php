@@ -459,22 +459,34 @@ add_filter( 'the_content', function( $content ) {
 add_filter( 'author_link', '__return_empty_string', 99 );
 
 /* -------------------------------------------------------
-   One-shot bootstrap: create the default Primary + Footer
-   navigation menus the first time the theme is activated.
+   Bootstrap: create the default Primary + Footer navigation
+   menus, then assign them to this theme's locations.
 
-   Idempotent — gated on the option `eeiblog_default_menu_created`
-   so it runs exactly once. Roman can edit the menus afterwards
-   in WP Admin → Appearance → Menus, and his edits survive
-   theme updates / re-activations because the gate prevents
-   the bootstrap from running again.
+   Two separate gates:
+     1. `eeiblog_default_menu_created` — global option, set
+        once when the menus are first created. Prevents the
+        seeder from clobbering menus Roman edits later in
+        Appearance → Menus.
+     2. `eeiblog_default_menu_assigned_<theme_slug>` — per-
+        theme-dir option, set once per fresh theme directory.
+        WP stores menu→location assignments in
+        theme_mods_<slug>; when the theme directory changes
+        (zoo cleanup, dir rename), the new slug has empty
+        theme_mods and primary/footer end up unassigned.
+        This gate ensures the locations get re-pointed at
+        the existing menus on first activation under the new
+        slug, without overwriting later edits.
 
-   Hooked twice (after_switch_theme + admin_init) so the seed
-   fires regardless of how the theme was activated, without
-   risk of double-seeding (the option flag short-circuits the
-   second pass).
+   Hooked twice (after_switch_theme + admin_init) to seed
+   regardless of activation method; the gates short-circuit
+   the redundant pass.
    ------------------------------------------------------- */
 function eeiblog_bootstrap_default_menus() {
-    if ( get_option( 'eeiblog_default_menu_created' ) ) {
+    $needs_create = ! get_option( 'eeiblog_default_menu_created' );
+    $assign_flag  = 'eeiblog_default_menu_assigned_' . get_stylesheet();
+    $needs_assign = ! get_option( $assign_flag );
+
+    if ( ! $needs_create && ! $needs_assign ) {
         return;
     }
 
@@ -494,6 +506,10 @@ function eeiblog_bootstrap_default_menus() {
     if ( is_wp_error( $primary_id ) ) {
         return;
     }
+
+    // Item creation only on the very first run — re-running would
+    // duplicate every entry on every theme dir change.
+    if ( $needs_create ) {
 
     // Each top-level entry: [ title, url, target ('' or '_blank'), children[] ].
     $primary_items = array(
@@ -546,10 +562,12 @@ function eeiblog_bootstrap_default_menus() {
         }
     }
 
+    } // end if ( $needs_create ) for Primary items
+
     // ─── Footer menu ──────────────────────────────────────────────
     $footer_obj = wp_get_nav_menu_object( 'Footer' );
     $footer_id  = $footer_obj ? (int) $footer_obj->term_id : wp_create_nav_menu( 'Footer' );
-    if ( ! is_wp_error( $footer_id ) ) {
+    if ( $needs_create && ! is_wp_error( $footer_id ) ) {
         $footer_items = array(
             array( 'Home',                 home_url( '/' ),                        ''       ),
             array( 'EEi Lessons',          home_url( '/category/teaching-tips/' ), ''       ),
@@ -573,15 +591,24 @@ function eeiblog_bootstrap_default_menus() {
         }
     }
 
-    // Assign both menus to their theme locations.
-    $locations = (array) get_theme_mod( 'nav_menu_locations' );
-    $locations['primary'] = $primary_id;
-    if ( ! is_wp_error( $footer_id ) ) {
-        $locations['footer'] = $footer_id;
+    // Assign both menus to this theme's locations. Runs once per
+    // theme directory (theme_mods are stored as theme_mods_<slug>,
+    // so a fresh install under a new slug starts with empty mods —
+    // we re-point primary/footer at the existing menu term IDs
+    // instead of orphaning them).
+    if ( $needs_assign ) {
+        $locations = (array) get_theme_mod( 'nav_menu_locations' );
+        $locations['primary'] = $primary_id;
+        if ( ! is_wp_error( $footer_id ) ) {
+            $locations['footer'] = $footer_id;
+        }
+        set_theme_mod( 'nav_menu_locations', $locations );
+        update_option( $assign_flag, 1 );
     }
-    set_theme_mod( 'nav_menu_locations', $locations );
 
-    update_option( 'eeiblog_default_menu_created', 1 );
+    if ( $needs_create ) {
+        update_option( 'eeiblog_default_menu_created', 1 );
+    }
 }
 add_action( 'after_switch_theme', 'eeiblog_bootstrap_default_menus' );
 add_action( 'admin_init',         'eeiblog_bootstrap_default_menus' );
