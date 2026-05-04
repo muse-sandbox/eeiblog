@@ -16,7 +16,9 @@
 
             <!-- Copyright -->
             <div class="footer-info">
-                <p class="copyright">HAL LEONARD, LLC</p>
+                <p class="copyright">
+                    &copy; <?php echo esc_html( date( 'Y' ) ); ?> HAL LEONARD, LLC
+                </p>
             </div>
 
             <!-- Footer Navigation -->
