@@ -14,7 +14,14 @@
 (function () {
     'use strict';
 
-    const SELECTOR = '.entry-content figure.wp-block-image img, .post-content-body figure.wp-block-image img';
+    // Two markup families:
+    //   - .wp-block-image (WP block editor)
+    //   - .image-gallery-wrapper (legacy Squarespace-import HTML, retained
+    //     after the Squarespace -> WP content migration).
+    const SELECTOR = '.entry-content figure.wp-block-image img, '
+                   + '.post-content-body figure.wp-block-image img, '
+                   + '.entry-content .image-gallery-wrapper img, '
+                   + '.post-content-body .image-gallery-wrapper img';
 
     let overlay, lbImg, counter, prevBtn, nextBtn, captionEl;
     let images = [];

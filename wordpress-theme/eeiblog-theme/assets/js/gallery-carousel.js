@@ -1,10 +1,9 @@
 /**
  * EEi Blog — Squarespace-style gallery carousel.
  *
- * Converts every multi-image WordPress gallery
- * (figure.wp-block-gallery.has-nested-images) inside .entry-content /
- * .post-content-body into a "big preview + thumbnails" carousel mirroring
- * the original Squarespace site:
+ * Converts every multi-image gallery inside .entry-content / .post-content-body
+ * into a "big preview + thumbnails" carousel mirroring the original
+ * Squarespace site:
  *
  *   - Click a thumbnail   → main image swaps (brief fade).
  *   - Click ‹ / › buttons → cycle thumbnails (wrap around).
@@ -12,16 +11,20 @@
  *   - ArrowLeft/Right when carousel has focus → cycle thumbs.
  *   - No auto-scroll / no auto-rotation.
  *
- * Lightbox compatibility:
- *   The original <figure class="wp-block-image"> nodes are moved into a
- *   hidden `.eei-carousel__source` wrapper but kept in the DOM, so
- *   lightbox.js's container-wide image indexing (it greps the whole
- *   .entry-content for `figure.wp-block-image img`) still works and the
- *   counter shows correct positions. The carousel's main-image click
- *   dispatches a synthetic click on the matching hidden source <img>,
- *   which lightbox.js's already-bound handler then catches.
+ * Two source markup families:
+ *   1. `figure.wp-block-gallery.has-nested-images` — WP block editor galleries.
+ *   2. `div.image-gallery-wrapper` — legacy Squarespace HTML retained after
+ *      the Squarespace → WordPress content migration.
  *
- * Galleries with linkTo:custom — every image is wrapped in a non-image
+ * Lightbox compatibility:
+ *   The original DOM children are moved into a hidden `.eei-carousel__source`
+ *   wrapper but kept in the DOM, so lightbox.js's container-wide image
+ *   indexing still finds them and the counter shows correct positions.
+ *   The carousel's main-image click dispatches a synthetic click on the
+ *   matching hidden source <img>, which lightbox.js's already-bound handler
+ *   then catches.
+ *
+ * WP galleries with linkTo:custom — every image wrapped in a non-image
  * <a href> — are NOT carousel-ified (clicks are meant to navigate, not
  * preview). They keep the existing grid layout but get an `eei-no-crop`
  * class so portrait images aren't cropped to a square aspect ratio.
@@ -29,8 +32,10 @@
 (function () {
     'use strict';
 
-    var GALLERY_SEL = '.entry-content figure.wp-block-gallery.has-nested-images, '
-                    + '.post-content-body figure.wp-block-gallery.has-nested-images';
+    var WP_GALLERY_SEL = '.entry-content figure.wp-block-gallery.has-nested-images, '
+                       + '.post-content-body figure.wp-block-gallery.has-nested-images';
+    var LEGACY_GALLERY_SEL = '.entry-content .image-gallery-wrapper, '
+                           + '.post-content-body .image-gallery-wrapper';
     var IMG_HREF_RE = /\.(jpe?g|png|webp|gif|avif)(\?|#|$)/i;
 
     function isCustomLinkGallery(galleryFig) {
@@ -61,25 +66,31 @@
         }
     }
 
-    function buildCarousel(galleryFig) {
-        var figures = Array.prototype.slice.call(
-            galleryFig.querySelectorAll(':scope > figure.wp-block-image')
-        );
-        if (figures.length < 2) {
-            // Single-image gallery — no carousel, just stop the cropping.
-            galleryFig.classList.add('eei-no-crop');
-            galleryFig.dataset.eeiCarousel = 'skipped-single';
+    /**
+     * Build the carousel UI inside `rootEl`. `imgs` is the ordered list of
+     * source <img> elements that drive the main viewer + thumbs. The
+     * existing children of `rootEl` are moved into a hidden source wrapper
+     * (so lightbox.js's container-wide indexing still works).
+     */
+    function buildCarousel(rootEl, imgs) {
+        if (imgs.length < 2) {
+            rootEl.classList.add('eei-no-crop');
+            rootEl.dataset.eeiCarousel = 'skipped-single';
             return;
         }
 
-        // 1) Hidden source wrapper — keeps originals (with lightbox handlers
-        //    already bound) in the DOM for lightbox.js to discover.
+        // Snapshot current children before we wipe the root.
+        var originalChildren = Array.prototype.slice.call(rootEl.childNodes);
+
+        // Hidden source wrapper — lightbox.js's selectors still match the
+        // imgs inside it because they're descendants of .entry-content /
+        // .post-content-body.
         var sourceWrap = document.createElement('div');
         sourceWrap.className = 'eei-carousel__source';
         sourceWrap.hidden = true;
-        figures.forEach(function (f) { sourceWrap.appendChild(f); });
+        originalChildren.forEach(function (c) { sourceWrap.appendChild(c); });
 
-        // 2) Main viewer
+        // Main viewer
         var main = document.createElement('div');
         main.className = 'eei-carousel__main';
 
@@ -103,13 +114,12 @@
         main.appendChild(mainImg);
         main.appendChild(nextBtn);
 
-        // 3) Thumbnails
+        // Thumbnails
         var thumbs = document.createElement('div');
         thumbs.className = 'eei-carousel__thumbs';
         thumbs.setAttribute('role', 'tablist');
 
-        var thumbButtons = figures.map(function (fig, i) {
-            var srcImg = fig.querySelector('img');
+        var thumbButtons = imgs.map(function (srcImg, i) {
             var btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'eei-carousel__thumb' + (i === 0 ? ' is-active' : '');
@@ -117,10 +127,8 @@
             btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
             btn.dataset.index = String(i);
             var img = document.createElement('img');
-            if (srcImg) {
-                img.src = srcImg.currentSrc || srcImg.src;
-                img.alt = srcImg.alt || '';
-            }
+            img.src = srcImg.currentSrc || srcImg.src;
+            img.alt = srcImg.alt || '';
             img.loading = 'lazy';
             img.decoding = 'async';
             btn.appendChild(img);
@@ -128,24 +136,23 @@
             return btn;
         });
 
-        // 4) Mount
-        galleryFig.classList.add('eei-carousel');
-        galleryFig.setAttribute('data-eei-carousel', '');
-        galleryFig.setAttribute('tabindex', '0');
-        galleryFig.appendChild(main);
-        galleryFig.appendChild(thumbs);
-        galleryFig.appendChild(sourceWrap);
+        // Mount
+        rootEl.classList.add('eei-carousel');
+        rootEl.setAttribute('data-eei-carousel', '');
+        rootEl.setAttribute('tabindex', '0');
+        rootEl.appendChild(main);
+        rootEl.appendChild(thumbs);
+        rootEl.appendChild(sourceWrap);
 
-        // 5) Initial state
+        // Initial state
         var active = 0;
-        var firstImg = figures[0].querySelector('img');
-        if (firstImg) copyImgAttrs(firstImg, mainImg);
+        copyImgAttrs(imgs[0], mainImg);
 
         function show(idx) {
-            var n = figures.length;
+            var n = imgs.length;
             var next = ((idx % n) + n) % n;
             if (next === active) return;
-            var sourceImg = figures[next].querySelector('img');
+            var sourceImg = imgs[next];
             if (!sourceImg) return;
 
             mainImg.classList.add('is-swapping');
@@ -172,10 +179,10 @@
 
         // Click main image → trigger the existing lightbox via the matching
         // hidden source <img> (lightbox.js bound a click handler on it during
-        // its own init pass).
+        // its own init pass, before this script ran).
         mainImg.style.cursor = 'zoom-in';
         mainImg.addEventListener('click', function () {
-            var sourceImg = figures[active].querySelector('img');
+            var sourceImg = imgs[active];
             if (sourceImg && typeof sourceImg.click === 'function') {
                 sourceImg.click();
             }
@@ -183,14 +190,14 @@
 
         // Keyboard nav — only when carousel itself is focused and lightbox
         // is closed (lightbox handles its own keys via document listener).
-        galleryFig.addEventListener('keydown', function (e) {
+        rootEl.addEventListener('keydown', function (e) {
             if (document.querySelector('.eei-lightbox.is-open')) return;
             if (e.key === 'ArrowLeft')  { e.preventDefault(); show(active - 1); }
             else if (e.key === 'ArrowRight') { e.preventDefault(); show(active + 1); }
         });
     }
 
-    function processGallery(galleryFig) {
+    function processWpGallery(galleryFig) {
         if (galleryFig.classList.contains('eei-carousel')) return;
         if (galleryFig.dataset.eeiCarousel) return;
 
@@ -202,11 +209,28 @@
             return;
         }
 
-        buildCarousel(galleryFig);
+        var figures = Array.prototype.slice.call(
+            galleryFig.querySelectorAll(':scope > figure.wp-block-image')
+        );
+        var imgs = figures
+            .map(function (f) { return f.querySelector('img'); })
+            .filter(Boolean);
+        buildCarousel(galleryFig, imgs);
+    }
+
+    function processLegacyGallery(wrapDiv) {
+        if (wrapDiv.classList.contains('eei-carousel')) return;
+        if (wrapDiv.dataset.eeiCarousel) return;
+
+        // Legacy Squarespace export wraps each image in <p>   <img/></p>.
+        // Just collect all descendant <img> tags in document order.
+        var imgs = Array.prototype.slice.call(wrapDiv.querySelectorAll('img'));
+        buildCarousel(wrapDiv, imgs);
     }
 
     function init() {
-        document.querySelectorAll(GALLERY_SEL).forEach(processGallery);
+        document.querySelectorAll(WP_GALLERY_SEL).forEach(processWpGallery);
+        document.querySelectorAll(LEGACY_GALLERY_SEL).forEach(processLegacyGallery);
     }
 
     if (document.readyState === 'loading') {
