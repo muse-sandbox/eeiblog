@@ -4,7 +4,7 @@ Theme URI: https://eeiblog.com
 Author: MuseGroup
 Author URI: https://eeiblog.com
 Description: A clean WordPress theme matching the EEi Blog design — dark header, white content area, list-style blog posts.
-Version: 1.0.11
+Version: 1.0.12
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: eeiblog
@@ -908,11 +908,146 @@ li { margin-bottom: 0.35em; }
     list-style: none;
 }
 
-.entry-content .wp-block-gallery.has-nested-images,
-.post-content-body .wp-block-gallery.has-nested-images {
+.entry-content .wp-block-gallery.has-nested-images:not(.eei-carousel),
+.post-content-body .wp-block-gallery.has-nested-images:not(.eei-carousel) {
     display: grid;
     gap: 1rem;
     grid-template-columns: repeat(var(--gallery-columns, 3), 1fr);
+}
+
+/* Galleries we leave as a grid (e.g. linkTo:custom navigation galleries
+   like post 203's correlated collections) but where we want to disable
+   WP core's `is-cropped` aspect-ratio squashing. Portrait images (book
+   covers) need to stay un-cropped. */
+.entry-content .wp-block-gallery.eei-no-crop figure.wp-block-image,
+.post-content-body .wp-block-gallery.eei-no-crop figure.wp-block-image {
+    aspect-ratio: auto;
+    height: auto;
+}
+.entry-content .wp-block-gallery.eei-no-crop figure.wp-block-image img,
+.post-content-body .wp-block-gallery.eei-no-crop figure.wp-block-image img {
+    object-fit: contain;
+    height: auto;
+    width: 100%;
+    aspect-ratio: auto;
+}
+
+/* =========================================================
+   Block: Gallery — Squarespace-style carousel
+   Activated by gallery-carousel.js on multi-image galleries.
+   See assets/js/gallery-carousel.js for behaviour.
+   ========================================================= */
+.entry-content .wp-block-gallery.eei-carousel,
+.post-content-body .wp-block-gallery.eei-carousel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 2rem 0;
+    padding: 0;
+}
+
+.eei-carousel:focus-visible {
+    outline: 2px solid var(--color-header-bg, #c00);
+    outline-offset: 4px;
+}
+
+.eei-carousel__main {
+    position: relative;
+    background: var(--color-card-bg, #f5f5f5);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 240px;
+}
+
+.eei-carousel__main-img {
+    max-width: 100%;
+    max-height: 60vh;
+    width: auto;
+    height: auto;
+    object-fit: contain; /* fixes portrait-book-cover cropping */
+    cursor: zoom-in;
+    transition: opacity 200ms ease;
+    display: block;
+}
+
+.eei-carousel__main-img.is-swapping { opacity: 0.4; }
+
+.eei-carousel__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    border: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 2;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.eei-carousel__nav--prev { left: 0.75rem; }
+.eei-carousel__nav--next { right: 0.75rem; }
+.eei-carousel__nav:hover { background: rgba(0, 0, 0, 0.8); }
+.eei-carousel__nav:focus-visible {
+    outline: 2px solid var(--color-header-bg, #c00);
+    outline-offset: 2px;
+}
+
+.eei-carousel__thumbs {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    scrollbar-width: thin;
+}
+
+.eei-carousel__thumb {
+    flex: 0 0 auto;
+    width: 80px;
+    height: 80px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    padding: 0;
+    background: var(--color-card-bg, #f5f5f5);
+    cursor: pointer;
+    transition: transform 150ms, border-color 150ms;
+    overflow: hidden;
+}
+
+.eei-carousel__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* thumbs may crop — they're previews */
+    display: block;
+}
+
+.eei-carousel__thumb.is-active {
+    border-color: var(--color-header-bg, #c00);
+    transform: scale(1.04);
+}
+
+.eei-carousel__thumb:focus-visible {
+    outline: 2px solid var(--color-header-bg, #c00);
+    outline-offset: 2px;
+}
+
+.eei-carousel__source { display: none !important; }
+
+@media (max-width: 600px) {
+    .eei-carousel__main-img { max-height: 50vh; }
+    .eei-carousel__thumb    { width: 64px; height: 64px; }
+    .eei-carousel__nav      { width: 36px; height: 36px; font-size: 1.4rem; }
 }
 
 .entry-content .wp-block-gallery.columns-2,

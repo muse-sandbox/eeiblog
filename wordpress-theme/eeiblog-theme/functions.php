@@ -392,6 +392,28 @@ function eeiblog_enqueue_lightbox() {
 add_action( 'wp_enqueue_scripts', 'eeiblog_enqueue_lightbox' );
 
 /* -------------------------------------------------------
+   Theme-bundled vanilla-JS gallery carousel — converts
+   multi-image WordPress galleries into Squarespace-style
+   "big preview + thumbnails" widgets on singular pages.
+   Depends on the lightbox script (loaded first) so that
+   clicking the carousel main image still opens the lightbox.
+   See assets/js/gallery-carousel.js for behavior.
+   ------------------------------------------------------- */
+function eeiblog_enqueue_gallery_carousel() {
+    if ( ! is_singular() ) {
+        return;
+    }
+    wp_enqueue_script(
+        'eeiblog-gallery-carousel',
+        get_theme_file_uri( 'assets/js/gallery-carousel.js' ),
+        array( 'eeiblog-lightbox' ),
+        wp_get_theme()->get( 'Version' ),
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'eeiblog_enqueue_gallery_carousel' );
+
+/* -------------------------------------------------------
    Suppress WordPress.com default "by Author" byline on
    single posts. Our theme handles meta via
    eeiblog_posted_meta() in single.php.
