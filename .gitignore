@@ -2,6 +2,8 @@
 .claude/
 .tmp/
 *.zip
+# ...except the published theme build artefacts.
+!wordpress-theme/*.zip
 
 # FUSE filesystem leftover temp files (unlinked-while-open marker files)
 .fuse_hidden*

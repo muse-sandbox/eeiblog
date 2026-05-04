@@ -76,7 +76,7 @@ Edit `.md` in `content/`, push to WordPress as a draft via the MCP workflow, rev
 
 ## Installing the theme
 
-1. Zip the theme directory: `cd wordpress-theme && zip -r eeiblog-theme.zip eeiblog-theme/`
+1. Grab the latest pre-built archive from `wordpress-theme/eeiblog-theme-<version>.zip` (currently `1.0.12`). To rebuild from source: `cd wordpress-theme/eeiblog-theme && zip -r ../eeiblog-theme-<version>.zip . -x '*.DS_Store'`.
 2. In WordPress admin: **Appearance → Themes → Add New → Upload Theme**
 3. Upload the zip, activate.
 4. Configure menus (**Appearance → Menus**): create *Primary* and *Footer* menus.
