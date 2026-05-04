@@ -214,9 +214,14 @@ function eeiblog_post_thumbnail( $size = 'eeiblog-thumbnail', $echo = true ) {
 }
 
 /**
- * Posted-on meta line (date + author).
+ * Posted-on meta line (category + date + optional author).
+ *
+ * Author is OFF by default. The blog runs under a single editorial
+ * voice, so per-post bylines aren't useful in either the post header
+ * or the listing cards. Pass $show_author=true explicitly if you ever
+ * want it back on a specific surface.
  */
-function eeiblog_posted_meta( $show_category = true, $show_date = true, $show_author = true ) {
+function eeiblog_posted_meta( $show_category = true, $show_date = true, $show_author = false ) {
     $category_html = '';
     if ( $show_category ) {
         $categories = get_the_category();
