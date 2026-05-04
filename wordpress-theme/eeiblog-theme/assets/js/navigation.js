@@ -18,7 +18,22 @@
             } );
         }
 
-        // ── Dropdown parent items (mobile tap + keyboard) ─────
+        // ── Dropdown parent items (mobile tap + keyboard + desktop hover) ──
+        // Desktop hover-intent: instant open via CSS :hover, but on mouseleave
+        // we add `.is-open-hover` and only strip it after HOVER_CLOSE_DELAY ms
+        // so the cursor can wiggle / overshoot without the menu vanishing.
+        var DESKTOP_BP = 768;
+        var HOVER_CLOSE_DELAY = 250;
+        var hoverTimers = new WeakMap();
+
+        function cancelClose( parent ) {
+            var t = hoverTimers.get( parent );
+            if ( t ) {
+                clearTimeout( t );
+                hoverTimers.delete( parent );
+            }
+        }
+
         parents.forEach( function ( parent ) {
             var link = parent.querySelector( 'a' );
 
@@ -26,7 +41,7 @@
             if ( link ) {
                 link.addEventListener( 'keydown', function ( e ) {
                     if ( e.key === 'Enter' || e.key === ' ' ) {
-                        var isMobile = window.innerWidth < 768;
+                        var isMobile = window.innerWidth < DESKTOP_BP;
                         if ( isMobile ) {
                             e.preventDefault();
                             parent.classList.toggle( 'is-open' );
@@ -40,7 +55,7 @@
             // Mobile: tap on parent link toggles sub-menu instead of navigating
             if ( link ) {
                 link.addEventListener( 'click', function ( e ) {
-                    if ( window.innerWidth < 768 ) {
+                    if ( window.innerWidth < DESKTOP_BP ) {
                         e.preventDefault();
                         parent.classList.toggle( 'is-open' );
                         var expanded = parent.classList.contains( 'is-open' );
@@ -48,6 +63,23 @@
                     }
                 } );
             }
+
+            // Desktop: keep submenu open for HOVER_CLOSE_DELAY after the
+            // cursor leaves both parent and submenu.
+            parent.addEventListener( 'mouseenter', function () {
+                if ( window.innerWidth < DESKTOP_BP ) return;
+                cancelClose( parent );
+                parent.classList.add( 'is-open-hover' );
+            } );
+            parent.addEventListener( 'mouseleave', function () {
+                if ( window.innerWidth < DESKTOP_BP ) return;
+                cancelClose( parent );
+                var t = setTimeout( function () {
+                    parent.classList.remove( 'is-open-hover' );
+                    hoverTimers.delete( parent );
+                }, HOVER_CLOSE_DELAY );
+                hoverTimers.set( parent, t );
+            } );
         } );
 
         // ── Close menu on outside click ───────────────────────

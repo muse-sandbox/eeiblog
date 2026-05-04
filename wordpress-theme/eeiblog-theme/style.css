@@ -4,7 +4,7 @@ Theme URI: https://eeiblog.com
 Author: MuseGroup
 Author URI: https://eeiblog.com
 Description: A clean WordPress theme matching the EEi Blog design — dark header, white content area, list-style blog posts.
-Version: 1.0.17
+Version: 1.0.18
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: eeiblog
@@ -174,11 +174,16 @@ li { margin-bottom: 0.35em; }
     opacity: 0.8;
 }
 
-/* Dropdowns */
+/* Dropdowns
+   No gap between parent <li> and the submenu — a visual gap creates a
+   dead zone where cursor exits both, killing :hover. The submenu sits
+   flush under the parent and a transparent ::before extends the hover
+   bridge upward to forgive small cursor wiggles. JS adds a 250ms
+   hover-intent close delay (.is-open-hover); see navigation.js. */
 .main-navigation .sub-menu {
     display: none;
     position: absolute;
-    top: calc(100% + 4px);
+    top: 100%;
     left: 0;
     background: var(--color-header-bg);
     border: 1px solid rgba(255,255,255,0.12);
@@ -189,6 +194,16 @@ li { margin-bottom: 0.35em; }
     padding: 6px 0;
     box-shadow: 0 8px 24px rgba(0,0,0,0.4);
     z-index: 200;
+}
+
+.main-navigation .sub-menu::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 0;
+    right: 0;
+    height: 8px;
+    /* invisible hover bridge */
 }
 
 .main-navigation .sub-menu li { width: 100%; }
@@ -203,7 +218,8 @@ li { margin-bottom: 0.35em; }
 }
 
 .main-navigation .menu-item-has-children:hover > .sub-menu,
-.main-navigation .menu-item-has-children:focus-within > .sub-menu {
+.main-navigation .menu-item-has-children:focus-within > .sub-menu,
+.main-navigation .menu-item-has-children.is-open-hover > .sub-menu {
     display: flex;
     flex-direction: column;
 }

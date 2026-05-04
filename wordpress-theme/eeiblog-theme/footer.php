@@ -16,11 +16,7 @@
 
             <!-- Copyright -->
             <div class="footer-info">
-                <p class="copyright">
-                    &copy; <?php echo esc_html( date( 'Y' ) ); ?>
-                    <?php bloginfo( 'name' ); ?>.
-                    <?php esc_html_e( 'All rights reserved.', 'eeiblog' ); ?>
-                </p>
+                <p class="copyright">HAL LEONARD, LLC</p>
             </div>
 
             <!-- Footer Navigation -->
