@@ -60,7 +60,7 @@ get_header();
             'heading' => get_theme_mod( 'eeiblog_box3_heading', __( 'Latest Posts', 'eeiblog' ) ),
             'tagline' => get_theme_mod( 'eeiblog_box3_tagline', 'TIPS • TUTORIALS • NEWS' ),
             'text'    => get_theme_mod( 'eeiblog_box3_text', __( 'Browse our teaching tips, tutorials, and updates.', 'eeiblog' ) ),
-            'url'     => get_theme_mod( 'eeiblog_box3_url', get_permalink( get_option( 'page_for_posts' ) ) ),
+            'url'     => get_theme_mod( 'eeiblog_box3_url', eeiblog_blog_index_url() ),
             'label'   => get_theme_mod( 'eeiblog_box3_label', __( 'Read Blog', 'eeiblog' ) ),
         ),
     );
@@ -125,7 +125,7 @@ get_header();
                 </ul>
 
                 <div style="text-align:center; margin-top:32px;">
-                    <a href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>" class="btn" style="display:inline-block; padding:12px 28px; background:var(--color-accent); color:#fff; border-radius:4px; font-weight:700; text-decoration:none;">
+                    <a href="<?php echo esc_url( eeiblog_blog_index_url() ); ?>" class="btn" style="display:inline-block; padding:12px 28px; background:var(--color-accent); color:#fff; border-radius:4px; font-weight:700; text-decoration:none;">
                         <?php esc_html_e( 'View All Posts →', 'eeiblog' ); ?>
                     </a>
                 </div>

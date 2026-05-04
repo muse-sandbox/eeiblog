@@ -414,6 +414,33 @@ function eeiblog_enqueue_gallery_carousel() {
 add_action( 'wp_enqueue_scripts', 'eeiblog_enqueue_gallery_carousel' );
 
 /* -------------------------------------------------------
+   Resolve the canonical "blog index" URL with a robust
+   fallback chain. Used by front-page.php's "View All Posts"
+   button and feature box #3 default URL.
+
+   Falls back through:
+     1. page_for_posts setting (if that page is published)
+     2. /category/teaching-tips/ (the Squarespace-equivalent
+        EE Lessons hub, the most populated category)
+     3. site home URL
+
+   Background: page_for_posts had pointed at a page that was
+   later trashed, and get_permalink( 0 ) silently falls back
+   to the most recent post — sending users to a random article.
+   ------------------------------------------------------- */
+function eeiblog_blog_index_url() {
+    $pfp_id = (int) get_option( 'page_for_posts' );
+    if ( $pfp_id && get_post_status( $pfp_id ) === 'publish' ) {
+        return get_permalink( $pfp_id );
+    }
+    $tt = get_term_by( 'slug', 'teaching-tips', 'category' );
+    if ( $tt && ! is_wp_error( $tt ) ) {
+        return get_term_link( $tt );
+    }
+    return home_url( '/' );
+}
+
+/* -------------------------------------------------------
    Suppress WordPress.com default "by Author" byline on
    single posts. Our theme handles meta via
    eeiblog_posted_meta() in single.php.
