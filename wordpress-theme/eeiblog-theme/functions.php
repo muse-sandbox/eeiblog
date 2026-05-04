@@ -452,3 +452,131 @@ add_filter( 'the_content', function( $content ) {
 }, 99 );
 
 add_filter( 'author_link', '__return_empty_string', 99 );
+
+/* -------------------------------------------------------
+   One-shot bootstrap: create the default Primary + Footer
+   navigation menus the first time the theme is activated.
+
+   Idempotent — gated on the option `eeiblog_default_menu_created`
+   so it runs exactly once. Roman can edit the menus afterwards
+   in WP Admin → Appearance → Menus, and his edits survive
+   theme updates / re-activations because the gate prevents
+   the bootstrap from running again.
+
+   Hooked twice (after_switch_theme + admin_init) so the seed
+   fires regardless of how the theme was activated, without
+   risk of double-seeding (the option flag short-circuits the
+   second pass).
+   ------------------------------------------------------- */
+function eeiblog_bootstrap_default_menus() {
+    if ( get_option( 'eeiblog_default_menu_created' ) ) {
+        return;
+    }
+
+    // wp_update_nav_menu_item lives in wp-admin/includes/nav-menu.php,
+    // which is not loaded for non-admin requests (e.g., after_switch_theme
+    // can fire from WP-CLI or REST). Pull it in defensively.
+    if ( ! function_exists( 'wp_update_nav_menu_item' ) ) {
+        require_once ABSPATH . 'wp-admin/includes/nav-menu.php';
+    }
+    if ( ! function_exists( 'wp_update_nav_menu_item' ) ) {
+        return; // give up cleanly if the include is unavailable
+    }
+
+    // ─── Primary menu ─────────────────────────────────────────────
+    $primary_obj = wp_get_nav_menu_object( 'Primary' );
+    $primary_id  = $primary_obj ? (int) $primary_obj->term_id : wp_create_nav_menu( 'Primary' );
+    if ( is_wp_error( $primary_id ) ) {
+        return;
+    }
+
+    // Each top-level entry: [ title, url, target ('' or '_blank'), children[] ].
+    $primary_items = array(
+        array( 'Home',           home_url( '/' ),                        '',       array() ),
+        array( 'Teaching Tips',  home_url( '/category/teaching-tips/' ), '',       array() ),
+        array( 'EE Interactive', home_url( '/eei-overview-1/' ),         '',       array(
+            array( 'EE Overview',                      home_url( '/eei-overview-1/' ),                   '' ),
+            array( 'Soundcheck',                       home_url( '/soundcheck/' ),                       '' ),
+            array( 'Five Ways to Get Started',         home_url( '/getting-started/' ),                  '' ),
+            array( 'Teacher Audio Feedback',           home_url( '/teacher-audio-feedback/' ),           '' ),
+            array( 'EEi Webinars',                     home_url( '/eei-webinars/' ),                     '' ),
+            array( 'EEi Google Classroom Integration', home_url( '/eei-google-classroom-integration/' ), '' ),
+        ) ),
+        array( 'EE Method',      'https://www.halleonard.com/ee/',       '_blank', array(
+            array( 'EE Method Books',           'https://www.halleonard.com/ee/',         '_blank' ),
+            array( 'EE Band Methods',           'https://www.halleonard.com/ee/band/',    '_blank' ),
+            array( 'EE String Methods',         'https://www.halleonard.com/ee/strings/', '_blank' ),
+            array( 'EE Correlated Collections', home_url( '/correlatedcollections/' ),    ''       ),
+            array( 'EE Digital Books',          home_url( '/ee-digital-books/' ),         ''       ),
+        ) ),
+        array( 'Subscribe',      home_url( '/subscribe/' ),              '',       array() ),
+    );
+
+    foreach ( $primary_items as $i => $item ) {
+        list( $title, $url, $target, $children ) = $item;
+        $parent_id = wp_update_nav_menu_item( $primary_id, 0, array(
+            'menu-item-title'      => $title,
+            'menu-item-url'        => $url,
+            'menu-item-target'     => $target,
+            'menu-item-attr-title' => '',
+            'menu-item-status'     => 'publish',
+            'menu-item-position'   => $i + 1,
+            'menu-item-type'       => 'custom',
+        ) );
+        if ( is_wp_error( $parent_id ) ) {
+            continue;
+        }
+        foreach ( $children as $j => $child ) {
+            list( $c_title, $c_url, $c_target ) = $child;
+            wp_update_nav_menu_item( $primary_id, 0, array(
+                'menu-item-title'      => $c_title,
+                'menu-item-url'        => $c_url,
+                'menu-item-target'     => $c_target,
+                'menu-item-attr-title' => '',
+                'menu-item-status'     => 'publish',
+                'menu-item-parent-id'  => $parent_id,
+                'menu-item-position'   => $j + 1,
+                'menu-item-type'       => 'custom',
+            ) );
+        }
+    }
+
+    // ─── Footer menu ──────────────────────────────────────────────
+    $footer_obj = wp_get_nav_menu_object( 'Footer' );
+    $footer_id  = $footer_obj ? (int) $footer_obj->term_id : wp_create_nav_menu( 'Footer' );
+    if ( ! is_wp_error( $footer_id ) ) {
+        $footer_items = array(
+            array( 'Home',                 home_url( '/' ),                        ''       ),
+            array( 'EEi Lessons',          home_url( '/category/teaching-tips/' ), ''       ),
+            array( 'EEi Tutorials',        home_url( '/category/tutorials/' ),     ''       ),
+            array( 'Subscribe',            home_url( '/subscribe/' ),              ''       ),
+            array( 'Hal Leonard Website',  'http://www.halleonard.com/',           '_blank' ),
+            array( 'Terms & Conditions',   home_url( '/terms-of-use/' ),           ''       ),
+            array( 'Privacy Policy',       home_url( '/privacy-policy/' ),         ''       ),
+        );
+        foreach ( $footer_items as $i => $f ) {
+            list( $title, $url, $target ) = $f;
+            wp_update_nav_menu_item( $footer_id, 0, array(
+                'menu-item-title'      => $title,
+                'menu-item-url'        => $url,
+                'menu-item-target'     => $target,
+                'menu-item-attr-title' => '',
+                'menu-item-status'     => 'publish',
+                'menu-item-position'   => $i + 1,
+                'menu-item-type'       => 'custom',
+            ) );
+        }
+    }
+
+    // Assign both menus to their theme locations.
+    $locations = (array) get_theme_mod( 'nav_menu_locations' );
+    $locations['primary'] = $primary_id;
+    if ( ! is_wp_error( $footer_id ) ) {
+        $locations['footer'] = $footer_id;
+    }
+    set_theme_mod( 'nav_menu_locations', $locations );
+
+    update_option( 'eeiblog_default_menu_created', 1 );
+}
+add_action( 'after_switch_theme', 'eeiblog_bootstrap_default_menus' );
+add_action( 'admin_init',         'eeiblog_bootstrap_default_menus' );
