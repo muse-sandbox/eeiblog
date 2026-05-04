@@ -419,10 +419,13 @@ add_action( 'wp_enqueue_scripts', 'eeiblog_enqueue_gallery_carousel' );
    button and feature box #3 default URL.
 
    Falls back through:
-     1. page_for_posts setting (if that page is published)
-     2. /category/teaching-tips/ (the Squarespace-equivalent
-        EE Lessons hub, the most populated category)
-     3. site home URL
+     1. page_for_posts setting (if that page is published).
+     2. home_url('/?post_type=post') — shows the full post
+        archive: with a static front page, hitting the home
+        URL with a query string makes is_home() true and WP
+        renders home.php with the default main query (all
+        posts, paginated). This is the most idiomatic "all
+        posts" URL when no Posts page is configured.
 
    Background: page_for_posts had pointed at a page that was
    later trashed, and get_permalink( 0 ) silently falls back
@@ -433,11 +436,7 @@ function eeiblog_blog_index_url() {
     if ( $pfp_id && get_post_status( $pfp_id ) === 'publish' ) {
         return get_permalink( $pfp_id );
     }
-    $tt = get_term_by( 'slug', 'teaching-tips', 'category' );
-    if ( $tt && ! is_wp_error( $tt ) ) {
-        return get_term_link( $tt );
-    }
-    return home_url( '/' );
+    return home_url( '/?post_type=post' );
 }
 
 /* -------------------------------------------------------
