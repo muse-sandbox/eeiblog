@@ -1,140 +1,153 @@
 <?php
 /**
- * Front page template — mirrors the EEi Blog homepage with hero banner and feature boxes.
+ * Front page template — EEi Interactive home.
+ *
+ * Layout:
+ *   - Hero block (EE Interactive product banner + headline/sub + CTA)
+ *   - Audience section: Teachers   (banner overlay + 3 posts + view-all)
+ *   - Audience section: Students   (banner overlay + 3 posts + view-all)
+ *   - Audience section: News       (banner overlay + 3 posts + view-all)
+ *
+ * The three audience sections are driven by category slugs. Posts in `for-teachers`
+ * (cat 76611481) appear in the Teachers section; posts in `for-students`
+ * (76611482) in Students; posts in `news` (76611470) in News. Posts tagged with
+ * BOTH for-teachers and for-students appear in both sections.
  */
+
 get_header();
 ?>
 
-    <!-- ── Hero Banner ─────────────────────────────────────── -->
-    <section class="hero-banner" role="banner">
-        <?php if ( get_header_image() ) : ?>
-            <img class="hero-img"
-                 src="<?php header_image(); ?>"
-                 width="<?php echo esc_attr( get_custom_header()->width ); ?>"
-                 height="<?php echo esc_attr( get_custom_header()->height ); ?>"
-                 alt=""
-                 aria-hidden="true"
-                 loading="eager">
+<!-- ── Hero: EE Interactive product banner ─────────────────────────── -->
+<section class="ee-hero">
+    <a class="ee-hero-image" href="https://www.essentialelementsinteractive.com/" target="_blank" rel="noopener noreferrer">
+        <img src="https://eeiblog.com/wp-content/uploads/2026/05/eei-overview-1-eei-banner-june2025.webp"
+             alt="Essential Elements Interactive — cloud-based companion to the EE method book"
+             loading="eager" />
+    </a>
+
+    <div class="ee-hero-text">
+        <h1 class="ee-hero-headline">
+            The Powerful Cloud-Based Companion to the Essential Elements Method Book
+        </h1>
+        <p class="ee-hero-sub">
+            Access instructional videos, bonus songs, SoundCheck Performance Assessment, and more!
+        </p>
+        <a class="ee-hero-cta" href="<?php echo esc_url( home_url( '/eei-overview-1/' ) ); ?>">
+            Discover the Power of EE Interactive
+        </a>
+    </div>
+</section>
+
+<?php
+/**
+ * Render an audience section: banner overlay with title/tagline + 3 latest posts +
+ * "View all →" link.
+ *
+ * @param array $args Required keys:
+ *   - title       (string, e.g. 'TEACHERS')
+ *   - tagline     (string, e.g. 'PLAN • SHARE • CONNECT')
+ *   - banner_url  (string, full URL to background image)
+ *   - banner_alt  (string)
+ *   - category    (string, category slug)
+ *   - view_all_url (string, archive URL)
+ *   - section_class (string, e.g. 'teachers' — appended to .audience-section--)
+ */
+function eeiblog_render_audience_section( array $args ): void {
+    $title         = $args['title'];
+    $tagline       = $args['tagline'];
+    $banner_url    = $args['banner_url'];
+    $banner_alt    = $args['banner_alt'];
+    $category      = $args['category'];
+    $view_all_url  = $args['view_all_url'];
+    $section_class = $args['section_class'];
+    ?>
+    <section class="audience-section audience-section--<?php echo esc_attr( $section_class ); ?>">
+        <a class="audience-banner"
+           href="<?php echo esc_url( $view_all_url ); ?>"
+           aria-label="<?php echo esc_attr( $banner_alt ); ?>"
+           style="background-image: url('<?php echo esc_url( $banner_url ); ?>');">
+            <div class="audience-overlay">
+                <h2 class="audience-title"><?php echo esc_html( $title ); ?></h2>
+                <p class="audience-tagline"><?php echo esc_html( $tagline ); ?></p>
+            </div>
+        </a>
+
+        <?php
+        $audience_query = new WP_Query( array(
+            'post_status'    => 'publish',
+            'posts_per_page' => 3,
+            'category_name'  => $category,
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+        ) );
+
+        if ( $audience_query->have_posts() ) : ?>
+            <ul class="audience-posts">
+                <?php while ( $audience_query->have_posts() ) : $audience_query->the_post(); ?>
+                    <li class="audience-post-card">
+                        <a class="audience-post-thumb" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
+                            <?php
+                            if ( has_post_thumbnail() ) {
+                                the_post_thumbnail( 'medium_large' );
+                            } else {
+                                eeiblog_post_thumbnail();
+                            }
+                            ?>
+                        </a>
+                        <div class="audience-post-content">
+                            <h3 class="audience-post-title">
+                                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                            </h3>
+                            <p class="audience-post-excerpt">
+                                <?php echo esc_html( get_the_excerpt() ); ?>
+                            </p>
+                        </div>
+                    </li>
+                <?php endwhile; wp_reset_postdata(); ?>
+            </ul>
         <?php endif; ?>
 
-        <div class="hero-content">
-            <?php
-            // Allow the hero headline to be customised via the Customizer (stored as a theme mod).
-            $hero_title = get_theme_mod(
-                'eeiblog_hero_title',
-                strtoupper( get_bloginfo( 'description' ) ) ?: 'WELCOME TO ' . strtoupper( get_bloginfo( 'name' ) )
-            );
-            $hero_text  = get_theme_mod( 'eeiblog_hero_text', '' );
-            $hero_btn_label = get_theme_mod( 'eeiblog_hero_btn_label', __( 'Learn More', 'eeiblog' ) );
-            $hero_btn_url   = get_theme_mod( 'eeiblog_hero_btn_url', '' );
-            ?>
-            <h1><?php echo esc_html( $hero_title ); ?></h1>
-            <?php if ( $hero_text ) : ?>
-                <p><?php echo esc_html( $hero_text ); ?></p>
-            <?php endif; ?>
-            <?php if ( $hero_btn_url && $hero_btn_label ) : ?>
-                <a href="<?php echo esc_url( $hero_btn_url ); ?>" class="btn"><?php echo esc_html( $hero_btn_label ); ?></a>
-            <?php endif; ?>
+        <div class="audience-cta">
+            <a class="audience-view-all" href="<?php echo esc_url( $view_all_url ); ?>">
+                View all <?php echo esc_html( strtolower( $title ) ); ?> posts →
+            </a>
         </div>
     </section>
-
-    <!-- ── Feature Boxes ───────────────────────────────────── -->
     <?php
-    // Feature boxes are defined as theme mods (3 boxes, each with heading/tagline/text/link).
-    $boxes = array(
-        array(
-            'heading' => get_theme_mod( 'eeiblog_box1_heading', __( 'Teachers', 'eeiblog' ) ),
-            'tagline' => get_theme_mod( 'eeiblog_box1_tagline', 'PLAN • SHARE • CONNECT' ),
-            'text'    => get_theme_mod( 'eeiblog_box1_text', __( 'Access lesson plans, assignment tools, and classroom resources.', 'eeiblog' ) ),
-            'url'     => get_theme_mod( 'eeiblog_box1_url', '' ),
-            'label'   => get_theme_mod( 'eeiblog_box1_label', __( 'Get Started', 'eeiblog' ) ),
-        ),
-        array(
-            'heading' => get_theme_mod( 'eeiblog_box2_heading', __( 'Students', 'eeiblog' ) ),
-            'tagline' => get_theme_mod( 'eeiblog_box2_tagline', 'LEARN • PLAY & RECORD • HAVE FUN' ),
-            'text'    => get_theme_mod( 'eeiblog_box2_text', __( 'Watch instructional videos, record yourself and get feedback.', 'eeiblog' ) ),
-            'url'     => get_theme_mod( 'eeiblog_box2_url', '' ),
-            'label'   => get_theme_mod( 'eeiblog_box2_label', __( 'Start Learning', 'eeiblog' ) ),
-        ),
-        array(
-            'heading' => get_theme_mod( 'eeiblog_box3_heading', __( 'Latest Posts', 'eeiblog' ) ),
-            'tagline' => get_theme_mod( 'eeiblog_box3_tagline', 'TIPS • TUTORIALS • NEWS' ),
-            'text'    => get_theme_mod( 'eeiblog_box3_text', __( 'Browse our teaching tips, tutorials, and updates.', 'eeiblog' ) ),
-            'url'     => get_theme_mod( 'eeiblog_box3_url', eeiblog_blog_index_url() ),
-            'label'   => get_theme_mod( 'eeiblog_box3_label', __( 'Read Blog', 'eeiblog' ) ),
-        ),
-    );
+}
+?>
 
-    $has_any_box = array_filter( $boxes, fn( $b ) => ! empty( $b['heading'] ) );
-    ?>
-    <?php if ( $has_any_box ) : ?>
-    <section class="feature-boxes">
-        <div class="container">
-            <?php foreach ( $boxes as $box ) :
-                if ( empty( $box['heading'] ) ) continue; ?>
-                <div class="feature-box">
-                    <h2><?php echo esc_html( $box['heading'] ); ?></h2>
-                    <?php if ( $box['tagline'] ) : ?>
-                        <p class="tagline"><?php echo esc_html( $box['tagline'] ); ?></p>
-                    <?php endif; ?>
-                    <?php if ( $box['text'] ) : ?>
-                        <p><?php echo esc_html( $box['text'] ); ?></p>
-                    <?php endif; ?>
-                    <?php if ( $box['url'] && $box['label'] ) : ?>
-                        <a href="<?php echo esc_url( $box['url'] ); ?>" class="btn"><?php echo esc_html( $box['label'] ); ?></a>
-                    <?php endif; ?>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </section>
-    <?php endif; ?>
+<!-- ── Audience: Teachers ──────────────────────────────────────────── -->
+<?php eeiblog_render_audience_section( array(
+    'title'         => 'TEACHERS',
+    'tagline'       => 'PLAN • SHARE • CONNECT',
+    'banner_url'    => 'https://eeiblog.com/wp-content/uploads/2026/05/misc-2026-05-ind-teacher-wide.webp',
+    'banner_alt'    => 'For Teachers — view all posts',
+    'category'      => 'for-teachers',
+    'view_all_url'  => home_url( '/category/for-teachers/' ),
+    'section_class' => 'teachers',
+) ); ?>
 
-    <!-- ── Recent Posts ────────────────────────────────────── -->
-    <main id="main" class="site-main">
-        <div class="container">
+<!-- ── Audience: Students ──────────────────────────────────────────── -->
+<?php eeiblog_render_audience_section( array(
+    'title'         => 'STUDENTS',
+    'tagline'       => 'LEARN • PLAY & RECORD • HAVE FUN',
+    'banner_url'    => 'https://eeiblog.com/wp-content/uploads/2026/05/misc-2026-05-student-device-2.webp',
+    'banner_alt'    => 'For Students — view all posts',
+    'category'      => 'for-students',
+    'view_all_url'  => home_url( '/category/for-students/' ),
+    'section_class' => 'students',
+) ); ?>
 
-            <div class="page-header">
-                <h2 class="page-title"><?php esc_html_e( 'Recent Posts', 'eeiblog' ); ?></h2>
-            </div>
-
-            <?php
-            $recent = new WP_Query( array(
-                'posts_per_page' => 5,
-                'post_status'    => 'publish',
-            ) );
-
-            if ( $recent->have_posts() ) : ?>
-                <ul class="posts-list">
-                    <?php while ( $recent->have_posts() ) : $recent->the_post(); ?>
-                        <li class="post-item">
-                            <a class="post-thumbnail" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
-                                <?php eeiblog_post_thumbnail(); ?>
-                            </a>
-                            <div class="post-content">
-                                <?php eeiblog_posted_meta(); ?>
-                                <h2 class="post-title">
-                                    <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                </h2>
-                                <p class="post-excerpt"><?php echo esc_html( get_the_excerpt() ); ?></p>
-                                <a href="<?php the_permalink(); ?>" class="read-more">
-                                    <?php esc_html_e( 'Read More →', 'eeiblog' ); ?>
-                                </a>
-                            </div>
-                        </li>
-                    <?php endwhile; wp_reset_postdata(); ?>
-                </ul>
-
-                <div style="text-align:center; margin-top:32px;">
-                    <a href="<?php echo esc_url( eeiblog_blog_index_url() ); ?>" class="btn" style="display:inline-block; padding:12px 28px; background:var(--color-accent); color:#fff; border-radius:4px; font-weight:700; text-decoration:none;">
-                        <?php esc_html_e( 'View All Posts →', 'eeiblog' ); ?>
-                    </a>
-                </div>
-
-            <?php else : ?>
-                <p class="no-posts"><?php esc_html_e( 'No posts yet.', 'eeiblog' ); ?></p>
-            <?php endif; ?>
-
-        </div>
-    </main>
+<!-- ── Audience: News ──────────────────────────────────────────────── -->
+<?php eeiblog_render_audience_section( array(
+    'title'         => 'NEWS',
+    'tagline'       => 'UPDATES • RELEASES • EVENTS',
+    'banner_url'    => 'https://eeiblog.com/wp-content/uploads/2026/05/misc-2026-05-news-updates-header.webp',
+    'banner_alt'    => 'News — view all posts',
+    'category'      => 'news',
+    'view_all_url'  => home_url( '/category/news/' ),
+    'section_class' => 'news',
+) ); ?>
 
 <?php get_footer(); ?>

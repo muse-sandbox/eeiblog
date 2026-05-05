@@ -4,7 +4,7 @@ Theme URI: https://eeiblog.com
 Author: MuseGroup
 Author URI: https://eeiblog.com
 Description: A clean WordPress theme matching the EEi Blog design — dark header, white content area, list-style blog posts.
-Version: 1.0.20
+Version: 1.0.21
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: eeiblog
@@ -238,128 +238,206 @@ li { margin-bottom: 0.35em; }
 }
 
 /* =========================================================
-   Hero / Banner (Front Page)
+   Front Page: EE Interactive hero
    ========================================================= */
-.hero-banner {
-    position: relative;
-    background: var(--color-header-bg);
-    color: #fff;
+.ee-hero {
+    max-width: 1100px;
+    margin: 40px auto 64px;
+    padding: 0 20px;
     text-align: center;
-    overflow: hidden;
-    min-height: 380px;
-    display: flex;
-    align-items: center;
 }
 
-.hero-banner img.hero-img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.55;
-}
-
-.hero-banner .hero-content {
-    position: relative;
-    z-index: 1;
-    padding: 60px var(--container-padding);
-    max-width: var(--container-width);
-    margin: 0 auto;
-}
-
-.hero-banner h1 {
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
-    font-weight: 800;
-    color: #ffffff;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    line-height: 1.2;
-    margin-bottom: 16px;
-}
-
-.hero-banner p {
-    font-size: 1.0625rem;
-    color: rgba(255,255,255,0.88);
-    max-width: 640px;
-    margin: 0 auto 28px;
-}
-
-.hero-banner .btn {
+.ee-hero-image {
     display: inline-block;
-    padding: 12px 28px;
-    background: var(--color-accent);
-    color: #fff;
-    border-radius: 4px;
-    font-weight: 700;
-    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.ee-hero-image img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.ee-hero-headline {
+    font-size: clamp(20px, 2.6vw, 32px);
+    font-weight: 800;
     text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.25;
+    margin: 32px 0 0;
+    color: var(--color-text, #1a1a1a);
+}
+
+.ee-hero-sub {
+    font-size: clamp(15px, 1.6vw, 18px);
+    color: var(--color-muted, #555);
+    margin: 16px auto 0;
+    max-width: 720px;
+    line-height: 1.5;
+}
+
+.ee-hero-cta {
+    display: inline-block;
+    margin-top: 32px;
+    padding: 16px 40px;
+    background: #2c2c2c;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 700;
     letter-spacing: 0.06em;
     text-decoration: none;
-    transition: background 0.2s;
+    border-radius: 2px;
+    transition: background 0.15s;
 }
 
-.hero-banner .btn:hover { background: var(--color-accent-hover); text-decoration: none; }
+.ee-hero-cta:hover,
+.ee-hero-cta:focus {
+    background: var(--color-accent, #c00);
+    color: #fff;
+}
 
 /* =========================================================
-   Feature Boxes (Front Page CTA blocks)
+   Front Page: Audience sections (Teachers / Students / News)
    ========================================================= */
-.feature-boxes {
-    background: var(--color-light-bg);
-    padding: 60px 0;
+.audience-section {
+    margin: 0 0 64px;
 }
 
-.feature-boxes .container {
+.audience-banner {
+    position: relative;
+    display: block;
+    min-height: 320px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.audience-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: rgba(64, 64, 64, 0.8);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.audience-banner:hover::before,
+.audience-banner:focus::before {
+    background-color: rgba(64, 64, 64, 0.7);
+}
+
+.audience-overlay {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    padding: 96px 20px;
+    pointer-events: none;
+}
+
+.audience-title {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    margin: 0;
+    color: #fff;
+}
+
+.audience-tagline {
+    font-size: clamp(14px, 1.5vw, 20px);
+    letter-spacing: 0.18em;
+    margin: 12px 0 0;
+    color: #fff;
+    font-weight: 500;
+}
+
+.audience-posts {
+    list-style: none;
+    margin: 40px auto 24px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 28px;
+    max-width: 1180px;
+    padding: 0 20px;
 }
 
-.feature-box {
-    background: #fff;
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 36px 28px;
-    text-align: center;
-    transition: box-shadow 0.2s;
+.audience-post-card {
+    display: flex;
+    flex-direction: column;
 }
 
-.feature-box:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
-
-.feature-box h2 {
-    font-size: 1.125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 10px;
-    color: var(--color-header-bg);
-}
-
-.feature-box .tagline {
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: var(--color-accent);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-}
-
-.feature-box p { font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 20px; }
-
-.feature-box a.btn {
-    display: inline-block;
-    padding: 10px 22px;
-    background: var(--color-accent);
-    color: #fff;
+.audience-post-thumb {
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #f0f0f0;
     border-radius: 4px;
-    font-weight: 700;
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    text-decoration: none;
-    transition: background 0.2s;
 }
 
-.feature-box a.btn:hover { background: var(--color-accent-hover); text-decoration: none; }
+.audience-post-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.audience-post-content {
+    padding: 16px 0 0;
+}
+
+.audience-post-title {
+    font-size: 18px;
+    line-height: 1.3;
+    margin: 0 0 8px;
+}
+
+.audience-post-title a {
+    color: var(--color-text, #1a1a1a);
+    text-decoration: none;
+}
+
+.audience-post-title a:hover,
+.audience-post-title a:focus {
+    color: var(--color-accent, #c00);
+}
+
+.audience-post-excerpt {
+    font-size: 15px;
+    color: var(--color-muted, #555);
+    line-height: 1.5;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.audience-cta {
+    text-align: center;
+    margin: 0 auto;
+    padding: 8px 20px;
+}
+
+.audience-view-all {
+    display: inline-block;
+    color: var(--color-accent, #c00);
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    text-transform: lowercase;
+}
+
+.audience-view-all:hover,
+.audience-view-all:focus {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .audience-banner { min-height: 220px; }
+    .audience-overlay { padding: 60px 16px; }
+}
 
 /* =========================================================
    Main Content Area
@@ -1325,8 +1403,6 @@ li { margin-bottom: 0.35em; }
 }
 
 @media (max-width: 480px) {
-    .hero-banner { min-height: 260px; }
-    .feature-boxes { padding: 40px 0; }
     .site-main { padding: 32px 0 48px; }
     .post-item { padding: 24px 0; }
     .post-navigation { gap: 16px; }
