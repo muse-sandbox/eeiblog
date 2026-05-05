@@ -109,7 +109,7 @@ function eeiblog_render_audience_section( array $args ): void {
 
         <div class="audience-cta">
             <a class="audience-view-all" href="<?php echo esc_url( $view_all_url ); ?>">
-                View all <?php echo esc_html( strtolower( $title ) ); ?> posts →
+                View all →
             </a>
         </div>
     </section>

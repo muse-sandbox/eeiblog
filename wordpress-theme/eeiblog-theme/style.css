@@ -4,7 +4,7 @@ Theme URI: https://eeiblog.com
 Author: MuseGroup
 Author URI: https://eeiblog.com
 Description: A clean WordPress theme matching the EEi Blog design — dark header, white content area, list-style blog posts.
-Version: 1.0.21
+Version: 1.0.22
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: eeiblog
@@ -292,8 +292,9 @@ li { margin-bottom: 0.35em; }
 
 .ee-hero-cta:hover,
 .ee-hero-cta:focus {
-    background: var(--color-accent, #c00);
+    background: #4a4a4a;          /* one shade lighter than resting #2c2c2c */
     color: #fff;
+    text-decoration: none;        /* override global a:hover underline */
 }
 
 /* =========================================================
@@ -312,6 +313,20 @@ li { margin-bottom: 0.35em; }
     background-repeat: no-repeat;
     text-decoration: none;
     overflow: hidden;
+}
+
+/* The whole banner is a single <a>, so global a:hover underline would
+   line through the title + tagline. Lock text-decoration off here. */
+.audience-banner,
+.audience-banner:hover,
+.audience-banner:focus,
+.audience-banner:active {
+    text-decoration: none;
+}
+
+.audience-banner .audience-title,
+.audience-banner .audience-tagline {
+    text-decoration: none;
 }
 
 .audience-banner::before {
