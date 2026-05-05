@@ -20,7 +20,7 @@ old_path,new_path,status_code,reason,added
 /eei-webinar-starting-band-repeat/,/on-demand-starting-band/,301,Repeat session of same webinar,2026-04-30
 /eei-webinar-starting-band/,/on-demand-starting-band/,301,Live event passed; on-demand is canonical,2026-04-30
 /eei-webinars2/,/eei-webinar-kids-on-track/,301,Old live event landing for same webinar,2026-04-30
-/eei-video-assignments/,/eei-video-assignments-s/,301,Duplicate; -s version is the full one,2026-04-30
+/eei-video-assignments-s/,/eei-video-assignments/,301,Merged duplicate strings variant into canonical,2026-05-04
 /recordingassignments/,/recording-assignments/,301,Reconcile two similar pages — keep the longer one,2026-04-30
 #
 # === SLUG RENAMES (after trash + new post replaces page) ===
@@ -69,3 +69,12 @@ old_path,new_path,status_code,reason,added
 #
 # === SLUG TYPO FIXES ===
 /brass-mouhtpiece/,/brass-mouthpiece/,301,Fix typo in original Squarespace slug,2026-05-04
+#
+# === AUDIENCE LANDING REDIRECTS (2026-05-05) ===
+# /teachers/ and /students/ posts trashed; replaced by category archives.
+/teachers/,/category/for-teachers/,301,Audience hub: Teachers landing post replaced by category archive,2026-05-05
+/students/,/category/for-students/,301,Audience hub: Students landing post replaced by category archive,2026-05-05
+#
+# === LEGACY DATE-PREFIXED SLUGS (2018 stubs trashed in favor of 2023+ rewrites) ===
+/2018-9-21-create-a-student-account/,/create-an-eei-student-account/,301,Legacy 2018 stub merged into 2023 router post (159),2026-05-05
+/2018-9-20-creating-a-rubric-in-eei/,/rubrics/,301,Legacy 2018 stub merged into 2018-11 rewrite (174),2026-05-05
