@@ -4,7 +4,7 @@ Theme URI: https://eeiblog.com
 Author: MuseGroup
 Author URI: https://eeiblog.com
 Description: A clean WordPress theme matching the EEi Blog design — dark header, white content area, list-style blog posts.
-Version: 1.0.27
+Version: 1.0.28
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: eeiblog
@@ -978,6 +978,147 @@ li { margin-bottom: 0.35em; }
 }
 
 .footer-links a:hover { color: #ffffff; text-decoration: none; }
+
+/* =========================================================
+   Header search trigger + dropdown form
+   ========================================================= */
+.header-search-toggle {
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: 8px;
+    margin-left: 8px;
+    color: var(--color-header-text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    border-radius: 4px;
+}
+
+.header-search-toggle:hover,
+.header-search-toggle:focus-visible {
+    color: var(--color-nav-hover);
+    background: rgba(255, 255, 255, 0.06);
+    outline: none;
+}
+
+.header-search-form {
+    position: absolute;
+    right: var(--container-padding, 16px);
+    top: 100%;
+    margin-top: 8px;
+    background: #ffffff;
+    color: var(--color-text);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    padding: 12px;
+    border-radius: 4px;
+    z-index: 250;
+    min-width: 320px;
+}
+
+.header-search-form .search-form {
+    display: flex;
+    gap: 8px;
+    margin: 0;
+}
+
+.header-search-form input[type="search"] {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border, #ddd);
+    border-radius: 2px;
+    font-size: 14px;
+    background: #fff;
+    color: var(--color-text);
+}
+
+.header-search-form input[type="submit"],
+.header-search-form button[type="submit"] {
+    padding: 8px 16px;
+    background: #2c2c2c;
+    color: #fff;
+    border: 0;
+    border-radius: 2px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.header-search-form input[type="submit"]:hover,
+.header-search-form button[type="submit"]:hover {
+    background: #4a4a4a;
+}
+
+.site-header,
+.site-header .container {
+    position: relative;
+}
+
+@media (max-width: 767px) {
+    .header-search-form {
+        right: var(--container-padding, 16px);
+        left: var(--container-padding, 16px);
+        min-width: 0;
+    }
+}
+
+/* =========================================================
+   Footer categories
+   Full-width row inside the dark footer, above the existing
+   brand / copyright / links flex band.
+   ========================================================= */
+.footer-categories {
+    flex: 0 0 100%;
+    padding-bottom: 24px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-categories-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 12px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-categories-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    column-count: 3;
+    column-gap: 32px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.footer-categories-list li {
+    margin: 0 0 6px;
+    break-inside: avoid;
+}
+
+.footer-categories-list a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.footer-categories-list a:hover,
+.footer-categories-list a:focus {
+    color: #ffffff;
+}
+
+@media (max-width: 900px) {
+    .footer-categories-list { column-count: 2; }
+}
+
+@media (max-width: 600px) {
+    .footer-categories-list { column-count: 1; }
+}
 
 /* =========================================================
    Block: Separator (<hr>)

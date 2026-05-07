@@ -46,6 +46,23 @@
                 ?>
             </nav><!-- #site-navigation -->
 
+            <!-- Site search trigger + form (toggled in navigation.js) -->
+            <button class="header-search-toggle" type="button"
+                    aria-expanded="false"
+                    aria-controls="header-search-form"
+                    aria-label="<?php esc_attr_e( 'Toggle search', 'eeiblog' ); ?>">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round"
+                     aria-hidden="true" focusable="false">
+                    <circle cx="11" cy="11" r="7"/>
+                    <line x1="16.5" y1="16.5" x2="21" y2="21"/>
+                </svg>
+            </button>
+            <div id="header-search-form" class="header-search-form" hidden>
+                <?php get_search_form(); ?>
+            </div>
+
         </div><!-- .container -->
     </header><!-- #masthead -->
 

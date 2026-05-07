@@ -3,6 +3,23 @@
     <footer id="colophon" class="site-footer" role="contentinfo">
         <div class="container">
 
+            <!-- Categories — full-width row above the brand/copyright/links band. -->
+            <div class="footer-categories">
+                <h3 class="footer-categories-title">
+                    <?php esc_html_e( 'Categories', 'eeiblog' ); ?>
+                </h3>
+                <ul class="footer-categories-list">
+                    <?php
+                    wp_list_categories( array(
+                        'orderby'    => 'name',
+                        'show_count' => true,
+                        'title_li'   => '',
+                        'hide_empty' => true,
+                    ) );
+                    ?>
+                </ul>
+            </div>
+
             <!-- Footer Logo -->
             <div class="footer-brand">
                 <?php if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) : ?>

@@ -110,5 +110,37 @@
                 parents.forEach( function ( p ) { p.classList.remove( 'is-open' ); } );
             }
         } );
+
+        // ── Header search: toggle the dropdown form ───────────
+        var searchBtn  = document.querySelector( '.header-search-toggle' );
+        var searchForm = document.getElementById( 'header-search-form' );
+        if ( searchBtn && searchForm ) {
+            searchBtn.addEventListener( 'click', function ( e ) {
+                e.stopPropagation();
+                var isOpen = ! searchForm.hidden;
+                searchForm.hidden = isOpen;
+                searchBtn.setAttribute( 'aria-expanded', String( ! isOpen ) );
+                if ( ! isOpen ) {
+                    var input = searchForm.querySelector( 'input[type="search"]' );
+                    if ( input ) input.focus();
+                }
+            } );
+
+            // Close on outside click — the dropdown floats over content.
+            document.addEventListener( 'click', function ( e ) {
+                if ( searchForm.hidden ) return;
+                if ( searchForm.contains( e.target ) || searchBtn.contains( e.target ) ) return;
+                searchForm.hidden = true;
+                searchBtn.setAttribute( 'aria-expanded', 'false' );
+            } );
+
+            // Esc closes (and returns focus to the trigger).
+            document.addEventListener( 'keyup', function ( e ) {
+                if ( e.key !== 'Escape' || searchForm.hidden ) return;
+                searchForm.hidden = true;
+                searchBtn.setAttribute( 'aria-expanded', 'false' );
+                searchBtn.focus();
+            } );
+        }
     } );
 } )();
