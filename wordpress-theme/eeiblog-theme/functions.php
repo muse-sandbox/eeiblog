@@ -54,6 +54,24 @@ function eeiblog_setup() {
 add_action( 'after_setup_theme', 'eeiblog_setup' );
 
 /* -------------------------------------------------------
+   Register an extra "Light" block style for the core Button
+   block, so editors can pick it from Button → Styles in the
+   sidebar (alongside Default and Outline). Visual rules live
+   in style.css under .wp-block-button.is-style-light. Use
+   case: white pill on dark hero / banner backgrounds.
+   ------------------------------------------------------- */
+function eeiblog_register_block_styles() {
+    if ( ! function_exists( 'register_block_style' ) ) {
+        return;
+    }
+    register_block_style( 'core/button', array(
+        'name'  => 'light',
+        'label' => __( 'Light (on dark)', 'eeiblog' ),
+    ) );
+}
+add_action( 'init', 'eeiblog_register_block_styles' );
+
+/* -------------------------------------------------------
    Enqueue Styles & Scripts
    ------------------------------------------------------- */
 function eeiblog_enqueue() {

@@ -4,7 +4,7 @@ Theme URI: https://eeiblog.com
 Author: MuseGroup
 Author URI: https://eeiblog.com
 Description: A clean WordPress theme matching the EEi Blog design — dark header, white content area, list-style blog posts.
-Version: 1.0.25
+Version: 1.0.26
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: eeiblog
@@ -1029,6 +1029,39 @@ li { margin-bottom: 0.35em; }
 .wp-block-button.is-style-outline .wp-block-button__link:hover {
     background-color: var(--color-header-bg);
     color: #ffffff;
+}
+
+/* Light button — for use ON DARK BACKGROUNDS (audience banners,
+   hero overlays, photographs). White fill, dark text, hairline
+   border for crispness on light photos that creep close to white.
+   Two ways to invoke:
+     - <a class="btn-light">…</a> in raw HTML / templates
+     - WP block editor: Button block → Styles → "Light" (registered
+       via register_block_style in functions.php) */
+.btn-light,
+.wp-block-button.is-style-light .wp-block-button__link {
+    display: inline-block;
+    background-color: #ffffff;
+    color: #1a1a1a;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
+    padding: 1rem 2.25rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    line-height: 1.2;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-light:hover,
+.btn-light:focus,
+.wp-block-button.is-style-light .wp-block-button__link:hover,
+.wp-block-button.is-style-light .wp-block-button__link:focus {
+    background-color: #f0f0f0;
+    color: #1a1a1a;
+    text-decoration: none;
 }
 
 /* =========================================================
