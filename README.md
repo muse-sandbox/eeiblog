@@ -76,7 +76,7 @@ Edit `.md` in `content/`, push to WordPress as a draft via the MCP workflow, rev
 
 ## Installing the theme
 
-1. Grab the latest pre-built archive from `wordpress-theme/eeiblog-theme-<version>.zip` (currently `1.0.24`). To rebuild from source: `cd wordpress-theme && zip -r eeiblog-theme-<version>.zip eeiblog-theme/ -x '*.DS_Store' '*/CLAUDE-CODE-TASKS.md'`. **The zip must contain a top-level `eeiblog-theme/` folder** — otherwise WP unzips into a directory named after the zip filename and every release becomes a new theme instead of an update.
+1. Grab the latest pre-built archive from `wordpress-theme/eeiblog-theme-<version>.zip` (currently `1.0.25`). To rebuild from source: `cd wordpress-theme && zip -r eeiblog-theme-<version>.zip eeiblog-theme/ -x '*.DS_Store' '*/CLAUDE-CODE-TASKS.md'`. **The zip must contain a top-level `eeiblog-theme/` folder** — otherwise WP unzips into a directory named after the zip filename and every release becomes a new theme instead of an update.
 2. **Switch off the active theme first.** WordPress.com refuses to overwrite the active theme on upload — instead it appends `-1`, `-2`, etc. to the directory name and you end up with a zoo. Workflow per release: **Appearance → Themes** → activate any default (Twenty Twenty-Four etc.) → hover the old `eeiblog-theme` and **Theme Details → Delete** → **Add New → Upload Theme** → upload the new zip → **Activate**. (On Atomic plans you can skip this dance via SFTP/SSH; Simple plans don't have that option.)
 3. The first activation seeds Primary + Footer nav menus automatically (idempotent — won't overwrite later edits).
 4. Configure menus (**Appearance → Menus**): create *Primary* and *Footer* menus.

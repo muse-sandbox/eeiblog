@@ -94,17 +94,23 @@
         var main = document.createElement('div');
         main.className = 'eei-carousel__main';
 
+        // SVG chevrons (instead of unicode `‹` / `›`) — text glyphs
+        // have inconsistent metrics across fonts and end up off-center
+        // inside the round button.
+        var SVG_PREV = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15.5 4 L7.5 12 L15.5 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        var SVG_NEXT = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8.5 4 L16.5 12 L8.5 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
         var prevBtn = document.createElement('button');
         prevBtn.type = 'button';
         prevBtn.className = 'eei-carousel__nav eei-carousel__nav--prev';
         prevBtn.setAttribute('aria-label', 'Previous image');
-        prevBtn.innerHTML = '‹';
+        prevBtn.innerHTML = SVG_PREV;
 
         var nextBtn = document.createElement('button');
         nextBtn.type = 'button';
         nextBtn.className = 'eei-carousel__nav eei-carousel__nav--next';
         nextBtn.setAttribute('aria-label', 'Next image');
-        nextBtn.innerHTML = '›';
+        nextBtn.innerHTML = SVG_NEXT;
 
         var mainImg = document.createElement('img');
         mainImg.className = 'eei-carousel__main-img';

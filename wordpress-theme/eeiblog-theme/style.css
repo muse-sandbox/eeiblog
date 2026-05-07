@@ -4,7 +4,7 @@ Theme URI: https://eeiblog.com
 Author: MuseGroup
 Author URI: https://eeiblog.com
 Description: A clean WordPress theme matching the EEi Blog design — dark header, white content area, list-style blog posts.
-Version: 1.0.24
+Version: 1.0.25
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: eeiblog
@@ -835,16 +835,23 @@ li { margin-bottom: 0.35em; }
     font-size: 0.9rem;
 }
 .widget ul li:last-child { border-bottom: none; }
-/* Anchor is block-level so the whole row is the click target — works
-   on mobile (≥ 44 px tap height) and desktop (no more "miss-by-1 px"). */
+/* Anchor is block-level + bleeds to the widget edges, so the whole
+   row is one tap target with a visible hover band (not just blue
+   text). Negative horizontal margin matches the widget's 24 px padding
+   so the hover background runs edge-to-edge inside the widget. */
 .widget ul li a {
     display: block;
-    padding: 12px 0;
+    padding: 12px 24px;
+    margin: 0 -24px;
     color: var(--color-text);
     text-decoration: none;
+    transition: background-color 0.15s, color 0.15s;
 }
 .widget ul li a:hover,
-.widget ul li a:focus { color: var(--color-accent); }
+.widget ul li a:focus {
+    color: var(--color-accent);
+    background-color: rgba(0, 0, 0, 0.05);
+}
 
 /* Search widget */
 .widget.widget_search .search-form {
@@ -1091,12 +1098,17 @@ li { margin-bottom: 0.35em; }
     display: flex;
     align-items: center;
     justify-content: center;
+    /* Locked height so swapping a tall portrait → short landscape (or
+       vice versa) doesn't reflow content below. Images use
+       object-fit: contain inside, letterboxing where needed. */
+    height: 60vh;
     min-height: 240px;
+    max-height: 720px;
 }
 
 .eei-carousel__main-img {
     max-width: 100%;
-    max-height: 60vh;
+    max-height: 100%;
     width: auto;
     height: auto;
     object-fit: contain; /* fixes portrait-book-cover cropping */
@@ -1117,14 +1129,18 @@ li { margin-bottom: 0.35em; }
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    font-size: 1.6rem;
-    line-height: 1;
     cursor: pointer;
     z-index: 2;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.eei-carousel__nav svg {
+    width: 18px;
+    height: 18px;
+    display: block;
 }
 .eei-carousel__nav--prev { left: 0.75rem; }
 .eei-carousel__nav--next { right: 0.75rem; }
@@ -1175,9 +1191,10 @@ li { margin-bottom: 0.35em; }
 .eei-carousel__source { display: none !important; }
 
 @media (max-width: 600px) {
-    .eei-carousel__main-img { max-height: 50vh; }
+    .eei-carousel__main     { height: 50vh; min-height: 200px; }
     .eei-carousel__thumb    { width: 64px; height: 64px; }
-    .eei-carousel__nav      { width: 36px; height: 36px; font-size: 1.4rem; }
+    .eei-carousel__nav      { width: 36px; height: 36px; }
+    .eei-carousel__nav svg  { width: 14px; height: 14px; }
 }
 
 .entry-content .wp-block-gallery.columns-2,
