@@ -4,7 +4,7 @@ Theme URI: https://eeiblog.com
 Author: MuseGroup
 Author URI: https://eeiblog.com
 Description: A clean WordPress theme matching the EEi Blog design — dark header, white content area, list-style blog posts.
-Version: 1.0.31
+Version: 1.0.32
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: eeiblog
@@ -477,7 +477,8 @@ li { margin-bottom: 0.35em; }
     line-height: 1.5;
     margin: 0;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -632,7 +633,8 @@ li { margin-bottom: 0.35em; }
     color: #555;
     line-height: 1.65;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
     -webkit-box-orient: vertical;
     overflow: hidden;
     margin: 0;
