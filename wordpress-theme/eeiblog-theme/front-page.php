@@ -46,31 +46,47 @@ get_header();
  * @param array $args Required keys:
  *   - title       (string, e.g. 'TEACHERS')
  *   - tagline     (string, e.g. 'PLAN • SHARE • CONNECT')
+ *   - cta_text    (string, button label inside the overlay, e.g. 'Transform How You Teach with EEi')
  *   - banner_url  (string, full URL to background image)
  *   - banner_alt  (string)
  *   - category    (string, category slug)
- *   - view_all_url (string, archive URL)
+ *   - view_all_url (string, archive URL — used by the banner anchor AND the in-overlay button text container)
  *   - section_class (string, e.g. 'teachers' — appended to .audience-section--)
  */
 function eeiblog_render_audience_section( array $args ): void {
     $title         = $args['title'];
     $tagline       = $args['tagline'];
+    $cta_text      = $args['cta_text'];
     $banner_url    = $args['banner_url'];
     $banner_alt    = $args['banner_alt'];
     $category      = $args['category'];
     $view_all_url  = $args['view_all_url'];
     $section_class = $args['section_class'];
+    // Optional separate URL for the in-overlay button. Defaults to the
+    // banner's view-all URL so existing call sites keep working.
+    $cta_url       = ! empty( $args['cta_url'] ) ? $args['cta_url'] : $view_all_url;
     ?>
     <section class="audience-section audience-section--<?php echo esc_attr( $section_class ); ?>">
-        <a class="audience-banner"
-           href="<?php echo esc_url( $view_all_url ); ?>"
-           aria-label="<?php echo esc_attr( $banner_alt ); ?>"
-           style="background-image: url('<?php echo esc_url( $banner_url ); ?>');">
+        <div class="audience-banner"
+             style="background-image: url('<?php echo esc_url( $banner_url ); ?>');">
+            <!-- Stretched link covers the banner area for whole-block click. The
+                 overlay above it has pointer-events: none so clicks pass through
+                 to this anchor; the CTA button inside the overlay re-enables
+                 pointer-events on itself and routes clicks to its own URL. This
+                 avoids invalid <a>-inside-<a> nesting. -->
+            <a class="audience-banner-link"
+               href="<?php echo esc_url( $view_all_url ); ?>"
+               aria-label="<?php echo esc_attr( $banner_alt ); ?>"></a>
             <div class="audience-overlay">
                 <h2 class="audience-title"><?php echo esc_html( $title ); ?></h2>
                 <p class="audience-tagline"><?php echo esc_html( $tagline ); ?></p>
+                <?php if ( ! empty( $cta_text ) ) : ?>
+                    <a class="btn-light audience-cta-btn" href="<?php echo esc_url( $cta_url ); ?>">
+                        <?php echo esc_html( $cta_text ); ?>
+                    </a>
+                <?php endif; ?>
             </div>
-        </a>
+        </div>
 
         <?php
         $audience_query = new WP_Query( array(
@@ -121,6 +137,7 @@ function eeiblog_render_audience_section( array $args ): void {
 <?php eeiblog_render_audience_section( array(
     'title'         => 'TEACHERS',
     'tagline'       => 'PLAN • SHARE • CONNECT',
+    'cta_text'      => 'Transform How You Teach with EEi',
     'banner_url'    => 'https://eeiblog.com/wp-content/uploads/2026/05/misc-2026-05-ind-teacher-wide.webp',
     'banner_alt'    => 'For Teachers — view all posts',
     'category'      => 'for-teachers',
@@ -132,6 +149,7 @@ function eeiblog_render_audience_section( array $args ): void {
 <?php eeiblog_render_audience_section( array(
     'title'         => 'STUDENTS',
     'tagline'       => 'LEARN • PLAY & RECORD • HAVE FUN',
+    'cta_text'      => 'Turn Practice into Progress',
     'banner_url'    => 'https://eeiblog.com/wp-content/uploads/2026/05/misc-2026-05-student-device-2.webp',
     'banner_alt'    => 'For Students — view all posts',
     'category'      => 'for-students',
@@ -143,6 +161,7 @@ function eeiblog_render_audience_section( array $args ): void {
 <?php eeiblog_render_audience_section( array(
     'title'         => 'NEWS',
     'tagline'       => 'UPDATES • RELEASES • EVENTS',
+    'cta_text'      => "See What's New in EEi",
     'banner_url'    => 'https://eeiblog.com/wp-content/uploads/2026/05/misc-2026-05-news-updates-header.webp',
     'banner_alt'    => 'News — view all posts',
     'category'      => 'news',

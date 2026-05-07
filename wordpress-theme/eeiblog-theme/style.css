@@ -4,7 +4,7 @@ Theme URI: https://eeiblog.com
 Author: MuseGroup
 Author URI: https://eeiblog.com
 Description: A clean WordPress theme matching the EEi Blog design — dark header, white content area, list-style blog posts.
-Version: 1.0.26
+Version: 1.0.27
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: eeiblog
@@ -345,17 +345,42 @@ li { margin-bottom: 0.35em; }
 }
 
 .audience-banner:hover::before,
-.audience-banner:focus::before {
+.audience-banner:focus-within::before {
     background-color: rgba(64, 64, 64, 0.7);
+}
+
+/* Stretched link — invisible anchor that fills the banner so the
+   whole banner area is clickable, but the in-overlay button can be
+   its own <a> on top (avoiding invalid <a>-in-<a> nesting). The
+   overlay above this is pointer-events: none, so clicks land here
+   unless they hit the button. */
+.audience-banner-link {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    /* No visible content — aria-label provides the accessible name. */
+}
+
+.audience-banner-link:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: -6px;
 }
 
 .audience-overlay {
     position: relative;
-    z-index: 2;
+    z-index: 3; /* above stretched .audience-banner-link */
     text-align: center;
     color: #fff;
     padding: 96px 20px;
     pointer-events: none;
+}
+
+/* Re-enable pointer events on the in-overlay button so clicks on it
+   route to its own href, not the stretched banner link below. */
+.audience-overlay .audience-cta-btn {
+    pointer-events: auto;
+    display: inline-block;
+    margin-top: 24px;
 }
 
 .audience-title {
