@@ -4,7 +4,7 @@ Theme URI: https://eeiblog.com
 Author: MuseGroup
 Author URI: https://eeiblog.com
 Description: A clean WordPress theme matching the EEi Blog design — dark header, white content area, list-style blog posts.
-Version: 1.0.30
+Version: 1.0.31
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: eeiblog
@@ -51,6 +51,28 @@ body {
     color: var(--color-text);
     background: var(--color-body-bg);
     -webkit-font-smoothing: antialiased;
+    /* Sticky footer scaffolding — on short pages (404, empty archive)
+       the footer would otherwise float in the middle of the viewport.
+       Body fills the viewport, #page is a flex column inside it, and
+       .site-content grows to push the footer down to the bottom edge. */
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+#page {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#page > .site-content {
+    flex: 1 0 auto;
+}
+
+#page > .site-footer {
+    flex-shrink: 0;
 }
 
 a { color: var(--color-accent); text-decoration: none; transition: color 0.2s; }
@@ -1393,10 +1415,12 @@ li { margin-bottom: 0.35em; }
 
 .eei-carousel__thumbs {
     display: flex;
+    /* Wrap to multiple rows instead of a single horizontally-scrolling
+       strip. With 12-16 thumbs at 80 px the strip would otherwise run
+       off the column and the macOS auto-hide scrollbar made it look
+       like the carousel "размотало" in the wider gallery posts. */
+    flex-wrap: wrap;
     gap: 0.5rem;
-    overflow-x: auto;
-    padding-bottom: 0.25rem;
-    scrollbar-width: thin;
 }
 
 .eei-carousel__thumb {

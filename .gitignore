@@ -8,6 +8,10 @@
 # FUSE filesystem leftover temp files (unlinked-while-open marker files)
 .fuse_hidden*
 
+# Python bytecode cache
+__pycache__/
+*.pyc
+
 # Podcast audio source files — large binaries, kept locally only
 /assets/podcasts/**/*.mp3
 /assets/podcasts/**/*.wav
