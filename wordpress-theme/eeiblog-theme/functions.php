@@ -586,14 +586,15 @@ function eeiblog_bootstrap_default_menus() {
     $footer_obj = wp_get_nav_menu_object( 'Footer' );
     $footer_id  = $footer_obj ? (int) $footer_obj->term_id : wp_create_nav_menu( 'Footer' );
     if ( $needs_create && ! is_wp_error( $footer_id ) ) {
+        // EEi Lessons / EEi Tutorials / Hal Leonard Website moved out of
+        // the bottom legal-style strip — Lessons + Tutorials are already
+        // reachable via the Footer Categories block above, and the Hal
+        // Leonard link belongs alongside the new "Our Products" block.
         $footer_items = array(
-            array( 'Home',                 home_url( '/' ),                        ''       ),
-            array( 'EEi Lessons',          home_url( '/category/teaching-tips/' ), ''       ),
-            array( 'EEi Tutorials',        home_url( '/category/tutorials/' ),     ''       ),
-            array( 'Subscribe',            home_url( '/subscribe/' ),              ''       ),
-            array( 'Hal Leonard Website',  'http://www.halleonard.com/',           '_blank' ),
-            array( 'Terms & Conditions',   home_url( '/terms-of-use/' ),           ''       ),
-            array( 'Privacy Policy',       home_url( '/privacy-policy/' ),         ''       ),
+            array( 'Home',                 home_url( '/' ),                ''       ),
+            array( 'Subscribe',            home_url( '/subscribe/' ),      ''       ),
+            array( 'Terms & Conditions',   home_url( '/terms-of-use/' ),   ''       ),
+            array( 'Privacy Policy',       home_url( '/privacy-policy/' ), ''       ),
         );
         foreach ( $footer_items as $i => $f ) {
             list( $title, $url, $target ) = $f;

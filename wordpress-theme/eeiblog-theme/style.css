@@ -4,7 +4,7 @@ Theme URI: https://eeiblog.com
 Author: MuseGroup
 Author URI: https://eeiblog.com
 Description: A clean WordPress theme matching the EEi Blog design — dark header, white content area, list-style blog posts.
-Version: 1.0.28
+Version: 1.0.29
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: eeiblog
@@ -1066,18 +1066,24 @@ li { margin-bottom: 0.35em; }
 }
 
 /* =========================================================
-   Footer categories
-   Full-width row inside the dark footer, above the existing
-   brand / copyright / links flex band.
+   Footer top row
+   Full-width band inside the dark footer holding the
+   Categories list and the Our Products link list side by
+   side. Above the existing brand / copyright / links strip,
+   separated by a hairline divider.
    ========================================================= */
-.footer-categories {
+.footer-top {
     flex: 0 0 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 40px;
     padding-bottom: 24px;
     margin-bottom: 8px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
 }
 
-.footer-categories-title {
+.footer-section-title {
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
@@ -1086,38 +1092,47 @@ li { margin-bottom: 0.35em; }
     color: rgba(255, 255, 255, 0.7);
 }
 
-.footer-categories-list {
+.footer-categories-list,
+.footer-products-list {
     list-style: none;
     padding: 0;
     margin: 0;
-    column-count: 3;
-    column-gap: 32px;
     font-size: 13px;
     line-height: 1.5;
 }
 
-.footer-categories-list li {
+.footer-categories-list {
+    /* column-width lets the browser pick fit count for the
+       wider Categories column without us guessing breakpoints. */
+    column-width: 160px;
+    column-gap: 32px;
+}
+
+.footer-categories-list li,
+.footer-products-list li {
     margin: 0 0 6px;
     break-inside: avoid;
 }
 
-.footer-categories-list a {
+.footer-categories-list a,
+.footer-products-list a {
     color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
     transition: color 0.15s ease;
 }
 
 .footer-categories-list a:hover,
-.footer-categories-list a:focus {
+.footer-categories-list a:focus,
+.footer-products-list a:hover,
+.footer-products-list a:focus {
     color: #ffffff;
 }
 
-@media (max-width: 900px) {
-    .footer-categories-list { column-count: 2; }
-}
-
-@media (max-width: 600px) {
-    .footer-categories-list { column-count: 1; }
+@media (max-width: 700px) {
+    .footer-top {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
 }
 
 /* =========================================================
@@ -1163,6 +1178,33 @@ li { margin-bottom: 0.35em; }
 
 .wp-block-buttons {
     margin: 2rem 0;
+}
+
+/* Vertical button group — WP renders the inner .wp-block-button items
+   with no gap by default and varying widths by label, producing a
+   "staircase" of touching buttons. Add visual rhythm and (on desktop)
+   align the stack centred with a sane max width so a long label
+   doesn't drag the whole column wide. */
+.wp-block-buttons.is-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+}
+
+@media (min-width: 768px) {
+    .wp-block-buttons.is-vertical {
+        align-items: center;
+    }
+    .wp-block-buttons.is-vertical .wp-block-button {
+        width: 100%;
+        max-width: 560px;
+        margin: 0; /* the parent gap handles spacing now */
+    }
+    .wp-block-buttons.is-vertical .wp-block-button__link {
+        display: block;
+        text-align: center;
+    }
 }
 
 .wp-block-button__link.wp-element-button,

@@ -3,21 +3,36 @@
     <footer id="colophon" class="site-footer" role="contentinfo">
         <div class="container">
 
-            <!-- Categories — full-width row above the brand/copyright/links band. -->
-            <div class="footer-categories">
-                <h3 class="footer-categories-title">
-                    <?php esc_html_e( 'Categories', 'eeiblog' ); ?>
-                </h3>
-                <ul class="footer-categories-list">
-                    <?php
-                    wp_list_categories( array(
-                        'orderby'    => 'name',
-                        'show_count' => true,
-                        'title_li'   => '',
-                        'hide_empty' => true,
-                    ) );
-                    ?>
-                </ul>
+            <!-- Top row: Categories + Our Products, side by side on desktop,
+                 stacked on mobile. Sits above the brand/copyright/links band. -->
+            <div class="footer-top">
+                <div class="footer-categories">
+                    <h3 class="footer-section-title">
+                        <?php esc_html_e( 'Categories', 'eeiblog' ); ?>
+                    </h3>
+                    <ul class="footer-categories-list">
+                        <?php
+                        wp_list_categories( array(
+                            'orderby'    => 'name',
+                            'show_count' => true,
+                            'title_li'   => '',
+                            'hide_empty' => true,
+                        ) );
+                        ?>
+                    </ul>
+                </div>
+
+                <div class="footer-products">
+                    <h3 class="footer-section-title">
+                        <?php esc_html_e( 'Our Products', 'eeiblog' ); ?>
+                    </h3>
+                    <ul class="footer-products-list">
+                        <li><a href="https://musescore.org/" target="_blank" rel="noopener noreferrer">MuseScore Studio</a></li>
+                        <li><a href="https://www.audacityteam.org/" target="_blank" rel="noopener noreferrer">Audacity</a></li>
+                        <li><a href="https://www.eemusicclass.com/" target="_blank" rel="noopener noreferrer">Essential Elements Music Class</a></li>
+                        <li><a href="https://www.sheetmusicplus.com/" target="_blank" rel="noopener noreferrer">Sheet Music Plus</a></li>
+                    </ul>
+                </div>
             </div>
 
             <!-- Footer Logo -->
