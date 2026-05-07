@@ -4,7 +4,7 @@ Theme URI: https://eeiblog.com
 Author: MuseGroup
 Author URI: https://eeiblog.com
 Description: A clean WordPress theme matching the EEi Blog design — dark header, white content area, list-style blog posts.
-Version: 1.0.22
+Version: 1.0.23
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: eeiblog
@@ -167,11 +167,17 @@ li { margin-bottom: 0.35em; }
     color: #ffffff;
 }
 
-/* Dropdown arrow indicator */
+/* Dropdown arrow indicator — full-size BLACK DOWN-POINTING TRIANGLE
+   (U+25BC) at near-full opacity. The previous BLACK DOWN-POINTING
+   SMALL TRIANGLE (U+25BE) at 0.7em / 0.8 alpha read as a dot, not
+   a chevron. */
 .main-navigation .menu-item-has-children > a::after {
-    content: ' ▾';
-    font-size: 0.7em;
-    opacity: 0.8;
+    content: '\25BC'; /* ▼ */
+    font-size: 0.62em;
+    margin-left: 0.45em;
+    vertical-align: 0.12em;
+    opacity: 0.95;
+    line-height: 1;
 }
 
 /* Dropdowns
