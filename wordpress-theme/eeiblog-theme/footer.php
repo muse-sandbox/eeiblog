@@ -28,6 +28,7 @@
                     </h3>
                     <ul class="footer-products-list">
                         <li><a href="https://musescore.org/" target="_blank" rel="noopener noreferrer">MuseScore Studio</a></li>
+                        <li><a href="https://musehub.com/" target="_blank" rel="noopener noreferrer">MuseHub</a></li>
                         <li><a href="https://www.audacityteam.org/" target="_blank" rel="noopener noreferrer">Audacity</a></li>
                         <li><a href="https://www.eemusicclass.com/" target="_blank" rel="noopener noreferrer">Essential Elements Music Class</a></li>
                         <li><a href="https://www.sheetmusicplus.com/" target="_blank" rel="noopener noreferrer">Sheet Music Plus</a></li>
