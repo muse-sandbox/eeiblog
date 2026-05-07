@@ -4,7 +4,7 @@ Theme URI: https://eeiblog.com
 Author: MuseGroup
 Author URI: https://eeiblog.com
 Description: A clean WordPress theme matching the EEi Blog design — dark header, white content area, list-style blog posts.
-Version: 1.0.23
+Version: 1.0.24
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: eeiblog
@@ -805,7 +805,9 @@ li { margin-bottom: 0.35em; }
    ========================================================= */
 .widget-area {
     position: sticky;
-    top: calc(var(--header-height) + 24px);
+    /* Generous offset so the widget doesn't feel like it's smacking
+       into the bottom of the dark header on scroll. */
+    top: calc(var(--header-height) + 56px);
 }
 
 .widget {
@@ -828,10 +830,21 @@ li { margin-bottom: 0.35em; }
 }
 
 .widget ul { list-style: none; margin: 0; padding: 0; }
-.widget ul li { padding: 6px 0; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
+.widget ul li {
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.9rem;
+}
 .widget ul li:last-child { border-bottom: none; }
-.widget ul li a { color: var(--color-text); text-decoration: none; }
-.widget ul li a:hover { color: var(--color-accent); }
+/* Anchor is block-level so the whole row is the click target — works
+   on mobile (≥ 44 px tap height) and desktop (no more "miss-by-1 px"). */
+.widget ul li a {
+    display: block;
+    padding: 12px 0;
+    color: var(--color-text);
+    text-decoration: none;
+}
+.widget ul li a:hover,
+.widget ul li a:focus { color: var(--color-accent); }
 
 /* Search widget */
 .widget.widget_search .search-form {
