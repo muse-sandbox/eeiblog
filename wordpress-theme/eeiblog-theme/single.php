@@ -21,12 +21,11 @@ get_header();
                                 <h1 class="post-title entry-title"><?php the_title(); ?></h1>
                             </header>
 
-                            <!-- Featured Image -->
-                            <?php if ( has_post_thumbnail() ) : ?>
-                                <div class="post-featured-image">
-                                    <?php the_post_thumbnail( 'eeiblog-featured', array( 'loading' => 'eager' ) ); ?>
-                                </div>
-                            <?php endif; ?>
+                            <!-- Featured image intentionally NOT rendered on single posts.
+                                 Authoring convention: body starts with intro paragraph → H2
+                                 step 1 → paragraph → figure (same image as featured), so
+                                 auto-rendering it here produced a duplicate. Featured still
+                                 surfaces in archives, audience cards, search, og:image. -->
 
                             <!-- Post Body -->
                             <div class="post-content-body entry-content">
