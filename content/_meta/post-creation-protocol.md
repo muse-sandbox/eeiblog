@@ -20,6 +20,19 @@ When creating a new post on eeiblog.com — whether via WP-admin or via Claude t
    - **News** — product announcements, feature releases, partnerships, holiday/seasonal content, events. (Note: News is also a topic-category — for news posts, use ONLY the News category and skip the audience dimension; news appears in its own homepage section.)
    - **Mixed** — content relevant to both audiences. Apply BOTH `For Teachers` AND `For Students` categories (no separate "Mixed" category exists; assigning both is the way to express "for everyone").
 
+## Logo / banner files
+
+When a post or template needs the EEi logo or a generic header banner, use these files (already in WP media):
+
+| Use case | File | Notes |
+| --- | --- | --- |
+| EEi logo (favicon, square 1:1) | `favicon-eei-1024.png` | Source for the WP Site Icon. Use anywhere a small EEi mark is needed (footer logo, inline reference, fallback for posts that imported a generic placeholder). |
+| EEi product banner (full lockup, wide) | `hybrid-squarespace-background-header-2023.webp` | The wide horizontal product banner. Use for hero areas (front-page hero, featured banners on lead-gen / book-download posts). |
+
+Deprecated — DO NOT use:
+- ❌ `eei-overview-1-eei-banner-june2025.webp` — too small, designer flagged it (replaced site-wide 2026-05-09 with `hybrid-squarespace-background-header-2023.webp`).
+- ❌ `Background.webp` (and variants like `Background-1.webp`, `Background-2.webp`) — 2018 Squarespace placeholder; replaced with `favicon-eei-1024.png` for any logo-style usage.
+
 ## Workflow when Claude is asked to create or edit a post
 
 Claude must always:
@@ -73,6 +86,31 @@ There's a planned `save_post` hook in the theme as a safety net for posts author
 
 Tooling: see one-time regeneration task in `content/_meta/tasks.md` (top priority).
 
+## Webinar post structure
+
+Posts that embed a webinar video (or any long-form video) follow this structure:
+
+1. Intro paragraph — what the webinar covers, who it's for
+2. Air date + presenter (e.g. `<strong>Originally aired:</strong> ... <strong>Presenter:</strong> ...`)
+3. `<h2>Watch the webinar</h2>` + Vimeo/YouTube embed
+4. `<h2>Inside the webinar</h2>` + 2–3 paragraphs distilling the key takeaways (don't list "topics covered" as bullets — write them as prose)
+5. **Collapsible full transcript** in a `<details class="wp-block-details">` block, divided into 4–6 thematic sections via `<h3>` headings (skim the transcript first, identify topic shifts, give each one a short descriptive heading — e.g. "Music reading skills", "Instrument fundamentals", "Practice habits and self-evaluation"). Continuous wall-of-text is unreadable; sectioned transcripts are skimmable.
+   ```html
+   <details class="wp-block-details">
+   <summary>Read the full transcript</summary>
+   <h3 class="wp-block-heading">First section title</h3>
+   <p class="wp-block-paragraph"><code>[00:00:00]</code> First paragraph of transcript ...</p>
+   <p class="wp-block-paragraph"><code>[00:00:25]</code> Next paragraph ...</p>
+   <h3 class="wp-block-heading">Second section title</h3>
+   <p class="wp-block-paragraph"><code>[00:01:53]</code> ...</p>
+   ...
+   </details>
+   ```
+   Transcripts live in `assets/videos/transcripts/<basename>.transcript.md` (raw machine output) and are coalesced into ~5-segment paragraphs with one leading timestamp each before injection. Use `<code>[hh:mm:ss]</code>` for the timestamp prefix. No disclaimer line — readers understand it's a transcript.
+6. Final CTA — single button "Learn more about EEi" → `/eei-overview-1/`
+
+The collapsible details block keeps the page short on first paint while keeping the transcript fully indexed by search engines (Google reads `<details>` content). The disclaimer line is required because whisper.cpp transcription is imperfect — readers should verify before quoting.
+
 ## External link rule
 
 Every `<a>` whose `href` points outside `eeiblog.com` MUST have:
@@ -91,15 +129,19 @@ Apply this when authoring any new post, and verify before publish. Sweep tooling
 
 ## Featured image rule
 
-When a post has a `featured_media`, the post body MUST NOT begin with a `<figure>` containing the same image. The theme renders the featured image at the top of the page automatically — putting the same image first in body produces a visual duplicate.
+The theme does NOT render `featured_media` on single post pages — featured is preview-only (used on category archives, search results, recent posts grids, OG/Twitter cards). So you're free to also include the same image inside body content; there's no double-render risk on the post page itself.
 
-If the original article opened with a hero image, choose one approach:
-- Set it as `featured_media` and remove the `<figure>` from body, OR
-- Leave it in body without a featured image (theme will skip the auto-render)
+Recommended body structure (designer-approved as of 2026-05-08):
 
-When writing new posts, prefer the featured-only approach — the theme controls layout consistently.
+  1. **Intro paragraph** (text — what the post is about, who it's for)
+  2. **H2** (first section / step heading)
+  3. **Paragraph** (section/step content)
+  4. **Figure** (the lead image — same one you set as `featured_media`)
+  5. … remaining sections
 
-Same applies to the post title: the theme renders the post title as an H1 above the featured image. Body content MUST NOT start with an H1/H2 that duplicates (or near-duplicates) the post title — that produces a double heading on the rendered page. If the article has a "title-on-print" line that differs from the post title, that's fine; just don't repeat the post title.
+This way the image lands AFTER reading context, not as a context-free hero. Featured_media duplicates this image for previews only.
+
+Same rule applies to the post title: the theme renders the post title as an H1 above the body. Body content MUST NOT start with an H1/H2 that duplicates (or near-duplicates) the post title — that produces a double heading. If the article has a distinct "title-on-print" line different from the post title, that's fine; just don't repeat the post title.
 
 ## Heading alignment rule
 

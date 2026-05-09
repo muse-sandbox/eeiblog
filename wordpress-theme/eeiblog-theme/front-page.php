@@ -20,7 +20,7 @@ get_header();
 <!-- ── Hero: EE Interactive product banner ─────────────────────────── -->
 <section class="ee-hero">
     <a class="ee-hero-image" href="https://www.essentialelementsinteractive.com/" target="_blank" rel="noopener noreferrer">
-        <img src="https://eeiblog.com/wp-content/uploads/2026/05/eei-overview-1-eei-banner-june2025.webp"
+        <img src="https://eeiblog.com/wp-content/uploads/2026/05/hybrid-squarespace-background-header-2023.webp"
              alt="Essential Elements Interactive — cloud-based companion to the EE method book"
              loading="eager" />
     </a>

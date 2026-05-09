@@ -10,10 +10,7 @@ _(none — pick from Pending below)_
 
 ## TOP PRIORITY
 
-- **Regenerate excerpts for all posts + automate on publish/edit** (was added 2026-05-07)
-  - Part 1: rewrite excerpts on ~80 published posts (clean 1-2 sentence summary, 30-60 words, avoid noisy auto-generated text from captions/buttons/alts)
-  - Part 2: automate going forward — either theme `save_post` hook to fill empty excerpts with heuristic, OR enforce as rule in `post-creation-protocol.md` (preferred to combine both)
-  - Excerpt rule already added to protocol doc — implementation pending
+_(none — pick from Pending below)_
 
 ## Pending
 
@@ -56,6 +53,21 @@ _(none — pick from Pending below)_
 - **FREE vs TEACHER signup CTA URL audit follow-up** — base sweep done (was #54), revisit if new posts add CTAs.
 
 ## Completed (recent — last 2 weeks)
+
+### 2026-05-09 (this session, continued)
+- Webinar transcription pipeline built — `scripts/transcribe-video.sh` (whisper.cpp on Mac) + `assets/videos/{audio,transcripts}/` layout. 5 videos transcribed by Roman locally (large-v3).
+- Post 194 (`/on-demand-starting-band/`) — full webinar restoration: title cleaned, video re-embedded, "Inside the webinar" 3-paragraph summary added, full collapsible transcript injected (`<details>` block, 173 timestamped paragraphs).
+- Webinar post structure rule added to `post-creation-protocol.md`.
+
+### 2026-05-08 (this session, continued)
+- Theme: stop rendering featured image on single post pages. Featured is now preview-only (category archives, search, recent posts, OG cards). Body controls the lead image position via "intro → H2 → paragraph → figure" convention. Featured-image rule in protocol updated to match.
+- Hub post 170 — added `is-vertical` class to button group, gap reuses existing CSS fix; "staircase" gone.
+- Restore tutorials 171, 172 (Submit Audio/Video Recording) — both published with clean slugs, For Students + Tutorials categories, featured images set (= same as body's lead figure), full step-by-step bodies replacing the gallery-only drafts. CTA changed from teacher signup to /eei-overview-1/ (audience mismatch fix).
+- Excerpt regeneration Part 1 — 50 posts updated, 38 skipped (37 already-good + post 189 pre-approved). Hand-crafted 30-60 word excerpts.
+- Fix broken YouTube embed on /music-studio/ (post 168) — `<a href="...">URL</a>` inside embed wrapper replaced with plain URL for oEmbed.
+- Audited 13 other posts with embed wrappers — all already correct (iframes from Jetpack); 168 was only broken case.
+- target="_blank" sweep extended to drafts — 8 drafts updated (10 attrs added). Publish posts already correct.
+- Protocol doc gained 4 new rules: External link, Featured image, Heading alignment, Excerpt — all hand-crafted, not auto-generated.
 
 ### 2026-05-07 (this session)
 - Add CTA buttons to home audience sections (Teachers / Students / News) — deployed via Claude Code.
